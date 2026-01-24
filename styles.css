@@ -1,11 +1,11 @@
 :root {
-    /* Colors - Premium Dark Palette */
-    --bg-color: #0a0a0a;
-    --text-primary: #ffffff;
-    --text-secondary: #a3a3a3;
-    --accent-color: #3b82f6;
-    /* Blue-500 equivalent */
-    --accent-glow: rgba(59, 130, 246, 0.5);
+    /* Definições padrão (Theme 1 - Risograph) */
+    --bg-color: #F4E7D4;
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --accent-color: #ed2d92;
+    --accent-secondary: #f7b721;
+    --dither-wave: #000000;
 
     /* Typography */
     --font-heading: 'Outfit', sans-serif;
@@ -13,6 +13,28 @@
 
     /* Spacing */
     --container-padding: 2rem;
+    --dither-wave: #000000;
+    --grain-opacity: 0.15;
+    /* Stronger for light background */
+    --grain-blend: multiply;
+    /* Better for visibility on cream */
+    --glitch-color: #ed2d92;
+    /* Theme 1: Pink Glitch */
+}
+
+[data-theme="theme2"] {
+    --bg-color: #01a66c;
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --accent-color: #f7b721;
+    --accent-secondary: #ed2d92;
+    --dither-wave: #000000;
+    /* Black waves on green looks cool/retro */
+    --grain-opacity: 0.15;
+    /* Overlay needs more opacity on colors */
+    --grain-blend: overlay;
+    --glitch-color: #f7b721;
+    /* Theme 2: Yellow Glitch */
 }
 
 * {
@@ -27,6 +49,8 @@ body {
     font-family: var(--font-body);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
 }
 
 /* Utilities */
@@ -77,73 +101,38 @@ body {
     overflow: hidden;
 }
 
-.slideshow {
+#grid-distortion-root {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
-    pointer-events: none;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.header-grain {
+#dither-bg-root,
+.dither-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0.4;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-    animation: noise 8s steps(10) infinite;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.6;
 }
 
-@keyframes noise {
-
-    0%,
-    100% {
-        background-position: 0 0;
-    }
-
-    10% {
-        background-position: -5% -10%;
-    }
-
-    20% {
-        background-position: -15% 5%;
-    }
-
-    30% {
-        background-position: 7% -25%;
-    }
-
-    40% {
-        background-position: 20% 25%;
-    }
-
-    50% {
-        background-position: -25% 10%;
-    }
-
-    60% {
-        background-position: 15% 5%;
-    }
-
-    70% {
-        background-position: 0% 15%;
-    }
-
-    80% {
-        background-position: 25% 35%;
-    }
-
-    90% {
-        background-position: -10% 10%;
-    }
+.distortion-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
+
+
 
 .slide-bg {
     position: absolute;
@@ -161,39 +150,68 @@ body {
     /* Transition removed for instant switch */
 }
 
-/* Filter Buttons */
+/* Filter Buttons - Outline Style */
 .filter-buttons {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-bottom: 2rem;
     flex-wrap: wrap;
+    padding: 0 1rem;
 }
 
 .filter-btn {
-    background: transparent;
-    border: 1px solid var(--text-secondary);
-    color: var(--text-secondary);
-    padding: 0.5rem 1.5rem;
-    border-radius: 2rem;
+    background: var(--bg-color);
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
     cursor: pointer;
     font-family: var(--font-body);
     font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    text-transform: lowercase;
+    letter-spacing: 0.02em;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+    position: relative;
+}
+
+/* Alternating rotations like BubbleMenu */
+.filter-btn:nth-child(1) {
+    transform: rotate(-4deg);
+}
+
+.filter-btn:nth-child(2) {
+    transform: rotate(3deg);
+}
+
+.filter-btn:nth-child(3) {
+    transform: rotate(-2deg);
+}
+
+.filter-btn:nth-child(4) {
+    transform: rotate(4deg);
 }
 
 .filter-btn:hover {
-    border-color: var(--text-primary);
-    color: var(--text-primary);
+    transform: rotate(0deg) scale(1.08);
+    background: var(--accent-color);
+    color: var(--bg-color);
+}
+
+.filter-btn:active {
+    transform: scale(0.95);
 }
 
 .filter-btn.active {
-    background-color: var(--text-primary);
+    background: var(--accent-color);
     color: var(--bg-color);
-    border-color: var(--text-primary);
-    font-weight: 600;
+    transform: rotate(0deg) scale(1.05);
+}
+
+.filter-btn.active:hover {
+    transform: rotate(0deg) scale(1.1);
 }
 
 .slide-bg.active {
@@ -436,4 +454,417 @@ body {
         transform: scale(1.5);
         opacity: 0;
     }
+}
+
+/* CurvedLoop Title Styles */
+.curved-loop-jacket {
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+    padding: 1rem 0;
+    overflow: hidden;
+}
+
+.curved-loop-svg {
+    user-select: none;
+    width: 100%;
+    aspect-ratio: 100 / 12;
+    overflow: visible;
+    display: block;
+    font-size: clamp(3rem, 6vw, 6rem);
+    fill: var(--accent-color);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+/* Glitch Effect for Header Images */
+.glitch-container {
+    position: relative;
+}
+
+.glitch-container::before,
+.glitch-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: screen;
+}
+
+.glitch-container::before {
+    background: var(--glitch-color);
+}
+
+.glitch-container::after {
+    background: var(--glitch-color);
+}
+
+.glitch-active::before {
+    opacity: 0.9;
+    animation: glitch-shift-pink1 0.15s steps(2) infinite;
+}
+
+.glitch-active::after {
+    opacity: 0.9;
+    animation: glitch-shift-pink2 0.15s steps(2) infinite reverse;
+}
+
+.glitch-active {
+    animation: glitch-skew 0.3s steps(3) infinite;
+}
+
+@keyframes glitch-shift-pink1 {
+    0% {
+        transform: translate(-15px, 0);
+        clip-path: inset(20% 0 50% 0);
+    }
+
+    25% {
+        transform: translate(15px, 0);
+        clip-path: inset(40% 0 20% 0);
+    }
+
+    50% {
+        transform: translate(-10px, 0);
+        clip-path: inset(60% 0 10% 0);
+    }
+
+    75% {
+        transform: translate(10px, 0);
+        clip-path: inset(10% 0 70% 0);
+    }
+
+    100% {
+        transform: translate(-15px, 0);
+        clip-path: inset(30% 0 40% 0);
+    }
+}
+
+@keyframes glitch-shift-pink2 {
+    0% {
+        transform: translate(15px, 0);
+        clip-path: inset(50% 0 20% 0);
+    }
+
+    25% {
+        transform: translate(-10px, 0);
+        clip-path: inset(15% 0 55% 0);
+    }
+
+    50% {
+        transform: translate(20px, 0);
+        clip-path: inset(35% 0 35% 0);
+    }
+
+    75% {
+        transform: translate(-15px, 0);
+        clip-path: inset(65% 0 5% 0);
+    }
+
+    100% {
+        transform: translate(12px, 0);
+        clip-path: inset(25% 0 45% 0);
+    }
+}
+
+@keyframes glitch-skew {
+    0% {
+        transform: skewX(0deg);
+    }
+
+    20% {
+        transform: skewX(-2deg);
+    }
+
+    40% {
+        transform: skewX(3deg);
+    }
+
+    60% {
+        transform: skewX(-1deg);
+    }
+
+    80% {
+        transform: skewX(2deg);
+    }
+
+    100% {
+        transform: skewX(0deg);
+    }
+}
+
+/* Global Grain Effect */
+.global-grain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+    mix-blend-mode: var(--grain-blend);
+
+}
+
+@keyframes grain {
+
+    0%,
+    100% {
+        background-position: 0% 0%;
+    }
+
+    10% {
+        background-position: -5% -10%;
+    }
+
+    20% {
+        background-position: -15% 5%;
+    }
+
+    30% {
+        background-position: 7% -25%;
+    }
+
+    40% {
+        background-position: 20% 25%;
+    }
+
+    50% {
+        background-position: -25% 10%;
+    }
+
+    60% {
+        background-position: 15% 5%;
+    }
+
+    70% {
+        background-position: 0% 15%;
+    }
+
+    80% {
+        background-position: 25% 35%;
+    }
+
+    90% {
+        background-position: -10% 10%;
+    }
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 6rem 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    /* Above grain */
+}
+
+.contact-section h2 {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    align-items: center;
+    text-align: left;
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 768px) {
+    .contact-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 3rem;
+    }
+}
+
+.whatsapp-main-btn {
+    background: #25D366;
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    padding: 2rem;
+    border-radius: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #fff;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+[data-theme="theme2"] .whatsapp-main-btn {
+    box-shadow: 8px 8px 0 var(--accent-secondary);
+}
+
+.whatsapp-main-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.whatsapp-main-btn:active {
+    transform: translate(0, 0);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.contact-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    /* Removing gap to use border separators comfortably */
+    width: 100%;
+}
+
+.contact-item {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+    padding: 1.5rem 0;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Theme 2: Lighter borders */
+[data-theme="theme2"] .contact-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-item:last-child {
+    border-bottom: none;
+}
+
+.contact-item:hover {
+    background: transparent;
+    color: var(--accent-color);
+    padding-left: 1rem;
+    /* Slide effect */
+}
+
+/* Footer Section */
+.site-footer {
+    padding: 2rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 4rem 2rem 0;
+    position: relative;
+    z-index: 10;
+}
+
+[data-theme="theme2"] .site-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    opacity: 0.7;
+    color: var(--text-primary);
+}
+
+
+/* Counter / Preloader Styles */
+.preloader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-color);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.counter-container {
+    position: relative;
+    display: inline-block;
+    height: 80vh;
+    /* Request: 80% height */
+    display: flex;
+    align-items: center;
+}
+
+.counter-counter {
+    display: flex;
+    overflow: hidden;
+    line-height: 1;
+}
+
+.counter-digit {
+    position: relative;
+    width: 1ch;
+    /* Width of one character */
+    height: 100%;
+    /* font-variant-numeric: tabular-nums; Not strictly needed for letters but good practice */
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+}
+
+.counter-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1em;
+    /* Base height reference */
+}
+
+.gradient-container {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.top-gradient {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+
+.bottom-gradient {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
 }
