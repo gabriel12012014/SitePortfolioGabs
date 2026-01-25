@@ -308,8 +308,25 @@ body {
 
 .theme-hidden {
     opacity: 0 !important;
+    visibility: hidden !important;
     pointer-events: none !important;
     transform: translateY(20px) !important;
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease !important;
+}
+
+.crosshair-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.4s ease !important;
+}
+
+/* Crosshair color change when in contact section */
+.crosshair-contact .cursor div {
+    background: linear-gradient(to right, transparent, var(--bg-color) 15%, var(--bg-color) 85%, transparent) !important;
+}
+
+.crosshair-contact .cursor div:last-child {
+    background: linear-gradient(to bottom, transparent, var(--bg-color) 15%, var(--bg-color) 85%, transparent) !important;
 }
 
 

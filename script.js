@@ -56,6 +56,11 @@ function setupFilters() {
 
 function initSlideshow() {
     const slideshowContainer = document.getElementById('header-slideshow');
+    // Check if element exists
+    if (!slideshowContainer) {
+        console.log('Slideshow container not found, skipping slideshow init');
+        return;
+    }
     // Create slide elements with random rotation
     slideshowContainer.innerHTML = projects.map((project, index) => {
         const rotation = (Math.random() * 12) - 6; // Random rotation between -6deg and 6deg
@@ -84,37 +89,93 @@ function setupNavToggle() {
 
     if (!contactSection || !mainNav || !siteLogo) return;
 
+    // Function to toggle visibility of all fixed elements
+    const toggleFixedElements = (hide) => {
+        const themeSwitcher = document.querySelector('.theme-switcher');
+        const crosshairRoot = document.getElementById('crosshair-root');
+
+        if (hide) {
+            mainNav.classList.add('nav-hidden');
+            siteLogo.classList.add('logo-hidden');
+            if (themeSwitcher) themeSwitcher.classList.add('theme-hidden');
+            // Change crosshair color instead of hiding it
+            if (crosshairRoot) crosshairRoot.classList.add('crosshair-contact');
+        } else {
+            mainNav.classList.remove('nav-hidden');
+            siteLogo.classList.remove('logo-hidden');
+            if (themeSwitcher) themeSwitcher.classList.remove('theme-hidden');
+            // Restore crosshair color
+            if (crosshairRoot) crosshairRoot.classList.remove('crosshair-contact');
+        }
+    };
+
+    // Track contact section visibility state
+    let isContactVisible = false;
+
     const observerOptions = {
-        root: null, // use viewport
-        threshold: 0.1 // trigger when 10% of the section is visible
+        root: null,
+        threshold: 0.8 // trigger when 80% of the section is visible
     };
 
     const observer = new IntersectionObserver((entries) => {
-        const themeSwitcher = document.querySelector('.theme-switcher');
-
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Section is in view - hide all fixed elements
-                mainNav.classList.add('nav-hidden');
-                siteLogo.classList.add('logo-hidden');
-                if (themeSwitcher) themeSwitcher.classList.add('theme-hidden');
-            } else {
-                // Section is out of view - show all fixed elements
-                mainNav.classList.remove('nav-hidden');
-                siteLogo.classList.remove('logo-hidden');
-                if (themeSwitcher) themeSwitcher.classList.remove('theme-hidden');
-            }
+            isContactVisible = entry.isIntersecting;
+            toggleFixedElements(isContactVisible);
         });
     }, observerOptions);
 
     observer.observe(contactSection);
+
+    // Also listen to scroll events for more reliable detection
+    window.addEventListener('scroll', () => {
+        const rect = contactSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const sectionHeight = rect.height;
+        const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+        const visiblePercent = visibleHeight / sectionHeight;
+
+        // Hide when 80% of the contact section is visible
+        const shouldHide = visiblePercent >= 0.8;
+
+        if (shouldHide !== isContactVisible) {
+            isContactVisible = shouldHide;
+            toggleFixedElements(shouldHide);
+        }
+    }, { passive: true });
+
+    // Expose global function for React components to call
+    window.updateFixedElementsVisibility = () => {
+        toggleFixedElements(isContactVisible);
+    };
 }
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Portfolio loaded correctly.");
-    renderProjects();
-    setupFilters();
-    initSlideshow();
-    setupNavToggle();
+
+    // Always run setupNavToggle first - it's critical
+    try {
+        setupNavToggle();
+        console.log("setupNavToggle executed successfully");
+    } catch (e) {
+        console.error("Error in setupNavToggle:", e);
+    }
+
+    try {
+        renderProjects();
+    } catch (e) {
+        console.error("Error in renderProjects:", e);
+    }
+
+    try {
+        setupFilters();
+    } catch (e) {
+        console.error("Error in setupFilters:", e);
+    }
+
+    try {
+        initSlideshow();
+    } catch (e) {
+        console.error("Error in initSlideshow:", e);
+    }
 });
