@@ -18,22 +18,33 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Theme Persistence Prep -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('site-theme') || 'theme1';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
 </head>
 
 <body>
-    <div id="preloader-root"></div>
+    <div id="preloader-root"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: var(--accent-color);">
+    </div>
     <div class="global-grain"></div>
     <header class="hero-header">
+        <!-- Site Logo -->
+        <div class="site-logo header-entrance">madebygabs.</div>
         <!-- Dither Background Effect -->
         <div id="dither-bg-root"></div>
         <!-- GridDistortion Slideshow -->
-        <div id="grid-distortion-root"></div>
+        <div id="grid-distortion-root" class="header-entrance"></div>
 
 
 
-        <nav class="main-nav">
-            <div class="logo">Gabs.</div>
-            <!-- Future Navigation Items -->
+        <nav class="main-nav header-entrance">
+            <div id="dock-root"></div>
         </nav>
 
 
@@ -57,32 +68,25 @@
             </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="contact-section">
-        <div class="container">
-            <h2>Entre em contato</h2>
-
-            <div class="contact-content">
-                <a href="https://wa.me/5511999999999" target="_blank" class="whatsapp-main-btn">
-                    Mande um zap!
-                </a>
-
-                <div class="contact-grid">
-                    <a href="mailto:seuemail@gmail.com" class="contact-item">Email</a>
-                    <a href="https://wa.me/5511999999999" target="_blank" class="contact-item">WhatsApp (Num)</a>
-                    <a href="https://instagram.com/seuusuario" target="_blank" class="contact-item">Instagram</a>
-                    <a href="https://itch.io/profile/seuusuario" target="_blank" class="contact-item">Itch.io</a>
-                </div>
+        <div class="contact-container">
+            <h2 class="contact-title">Manda um zap!</h2>
+            <div class="contact-links-row">
+                <a href="mailto:gabriel12012014@outlook.com" class="contact-link">gabriel12012014@outlook.com</a>
+                <a href="https://wa.me/5511991878100" target="_blank" class="contact-link">11 99187-8100</a>
+                <a href="https://instagram.com/gabaszw" target="_blank" class="contact-link">@gabaszw</a>
+                <a href="https://putsgabs.itch.io/" target="_blank" class="contact-link">itch.io</a>
             </div>
+        </div>
+
+        <div class="massive-footer-text">madebygabs.</div>
+
+        <div class="contact-container">
+            <div class="attribution-text">Site feito usando a ferramenta Antigravity</div>
         </div>
     </section>
 
-    <footer class="site-footer">
-        <div class="container footer-content">
-            <span>Made by gabs</span>
-            <span>Site feito usando a ferramenta Antigravity</span>
-        </div>
-    </footer>
+
 
     <!-- Crosshair Effect Root -->
     <div id="crosshair-root"></div>
@@ -97,7 +101,7 @@
 
     <!-- Crosshair Component (Babel) -->
     <script type="text/babel">
-        const { useRef, useEffect, useState, useId } = React;
+        const { useRef, useEffect, useState, useId, Children, cloneElement, useMemo } = React;
         const lerp = (a, b, n) => (1 - n) * a + n * b;
         const getMousePos = (e, container) => {
             if (container) {
@@ -775,9 +779,94 @@
 
         // Render GridDistortion slideshow in header
         // Preloader Logic using Framer Motion
-        const { motion, useSpring, useTransform } = window.Motion;
+        const { motion, useSpring, useTransform, useMotionValue, AnimatePresence } = window.Motion;
 
-        const STRIP_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789."; // Added dot 
+        function DockItem({ children, onClick, mouseX, spring, distance, magnification, baseItemSize }) {
+            const ref = useRef(null);
+
+            const mouseDistance = useTransform(mouseX, val => {
+                // Get the current center of this word
+                const rect = ref.current?.getBoundingClientRect() ?? { left: 0, width: 0 };
+                return val - (rect.left + rect.width / 2);
+            });
+
+            // scale factor (from 1 to approx 1.6)
+            const scale = useTransform(mouseDistance, [-distance, 0, distance], [1, 1.6, 1]);
+            const springScale = useSpring(scale, spring);
+
+            return (
+                <motion.div
+                    ref={ref}
+                    style={{
+                        scale: springScale,
+                        // This dynamic padding pushes neighbors as the word expands
+                        paddingLeft: useTransform(springScale, s => `${(s - 1) * 40}px`),
+                        paddingRight: useTransform(springScale, s => `${(s - 1) * 40}px`),
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap'
+                    }}
+                    onClick={onClick}
+                    className="dock-item"
+                >
+                    {children}
+                </motion.div>
+            );
+        }
+
+        function Dock({
+            items,
+            className = '',
+            spring = { mass: 0.1, stiffness: 150, damping: 12 },
+            magnification = 60,
+            distance = 150,
+            panelHeight = 64,
+            baseItemSize = 48
+        }) {
+            const mouseX = useMotionValue(Infinity);
+
+            return (
+                <div className="dock-outer">
+                    <motion.div
+                        onMouseMove={({ pageX }) => mouseX.set(pageX)}
+                        onMouseLeave={() => mouseX.set(Infinity)}
+                        className={`dock-panel ${className}`}
+                    >
+                        {items.map((item, index) => (
+                            <DockItem
+                                key={index}
+                                onClick={item.onClick}
+                                mouseX={mouseX}
+                                spring={spring}
+                                distance={distance}
+                                magnification={magnification}
+                                baseItemSize={baseItemSize}
+                            >
+                                <span className="dock-icon">{item.label}</span>
+                            </DockItem>
+                        ))}
+                    </motion.div>
+                </div>
+            );
+        }
+
+        const NavigationDock = () => {
+            const items = [
+                { label: 'Início', onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+                { label: 'Projetos', onClick: () => document.getElementById('work').scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'Contato', onClick: () => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }) },
+            ];
+
+            return (
+                <Dock items={items} magnification={80} distance={200} />
+            );
+        };
+
+
+
+        const STRIP_CHARS = "abcdefghijklmnopqrstuvwxyz.@#$%&*!?†§◆★●"; // Comic book swear symbols  
         const REPEATED_STRIP = STRIP_CHARS.repeat(4);
 
         function CharacterStrip({ targetChar, height, duration, delay }) {
@@ -801,7 +890,7 @@
             const y = useTransform(springValue, (latest) => -latest * height);
 
             return (
-                <div style={{ height: height, overflow: 'hidden', position: 'relative' }}>
+                <div style={{ height: height, overflow: 'hidden', position: 'relative', marginLeft: '-0.05em' }}>
                     <motion.div style={{ y, display: 'flex', flexDirection: 'column' }}>
                         {REPEATED_STRIP.split('').map((char, i) => (
                             <div key={i} className="counter-number" style={{ height: height, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -816,16 +905,32 @@
         const Preloader = () => {
             const [visible, setVisible] = useState(true);
             const targetText = "madebygabs.";
-            // Adjust font size since text is longer now
+
             const fontSize = window.innerWidth < 600 ? window.innerWidth * 0.12 : window.innerWidth * 0.08;
             const height = fontSize * 1.1;
 
+            // Cleanup parent style (anti-flash) once React takes over
             useEffect(() => {
-                // Reveal ~1.5s. Hold ~1s. Total 2.5s.
-                const timer = setTimeout(() => {
+                const root = document.getElementById('preloader-root');
+                if (root) {
+                    root.style.background = 'transparent';
+                    root.style.zIndex = 'auto';
+                    root.removeAttribute('style');
+                }
+            }, []);
+
+            useEffect(() => {
+                document.body.classList.add('preloading');
+                // Intro duration: 3.0s (approx 2s spin + 1s hold)
+                const exitTimer = setTimeout(() => {
                     setVisible(false);
-                }, 2500);
-                return () => clearTimeout(timer);
+                    document.body.classList.remove('preloading');
+                }, 3000);
+
+                return () => {
+                    clearTimeout(exitTimer);
+                    document.body.classList.remove('preloading');
+                };
             }, []);
 
             // Switching to Fade Out + Scale Up animation
@@ -842,22 +947,22 @@
                 >
                     <div style={{
                         display: 'flex',
-                        gap: '0.05em',
                         fontFamily: 'var(--font-heading)',
                         fontWeight: 900,
                         fontSize: fontSize,
-                        color: 'var(--bg-color)', // Inverted color as requested
+                        color: 'var(--bg-color)',
                         height: height,
                         overflow: 'hidden',
-                        lineHeight: 1
+                        lineHeight: 1,
+                        marginLeft: '0.05em'
                     }}>
                         {targetText.split('').map((char, i) => (
                             <CharacterStrip
                                 key={i}
                                 targetChar={char}
                                 height={height}
-                                delay={100 + i * 80} // Faster stagger: 100ms start + 80ms per char
-                                duration={1000} // Unused but kept for reference
+                                delay={100 + i * 80}
+                                duration={1000}
                             />
                         ))}
                     </div>
@@ -880,6 +985,12 @@
                     wave: [0.0, 0.0, 0.0]      // Black Wave
                 };
             }
+            if (theme === 'theme3') {
+                return {
+                    bg: [0.0, 0.0, 0.0],       // #000000 Black
+                    wave: [1.0, 1.0, 1.0]      // White Wave
+                };
+            }
             // Default Theme 1 (Risograph)
             return {
                 bg: [0.957, 0.906, 0.831], // #F4E7D4 Cream
@@ -888,10 +999,11 @@
         };
 
         const ThemeSwitcher = () => {
-            const [currentTheme, setCurrentTheme] = useState('theme1');
+            const [currentTheme, setCurrentTheme] = useState(() => localStorage.getItem('site-theme') || 'theme1');
 
             const setTheme = (theme) => {
                 setCurrentTheme(theme);
+                localStorage.setItem('site-theme', theme);
                 document.documentElement.setAttribute('data-theme', theme);
 
                 window.dispatchEvent(new CustomEvent('theme-change', {
@@ -900,13 +1012,14 @@
             };
 
             return (
-                <div style={{
+                <div className="theme-switcher" style={{
                     position: 'fixed',
-                    top: '2rem',
-                    right: '2rem',
-                    zIndex: 9999,
+                    bottom: '2rem',
+                    right: '1.5rem',
+                    zIndex: 10001,
                     display: 'flex',
-                    gap: '12px'
+                    gap: '12px',
+                    transition: 'all 0.4s ease'
                 }}>
                     {/* Theme 1: Cream */}
                     <button
@@ -954,11 +1067,36 @@
                             fontSize: '14px'
                         }}
                     >2</button>
+                    {/* Theme 3: Black/Pink */}
+                    <button
+                        onClick={() => setTheme('theme3')}
+                        aria-label="Theme 3"
+                        style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: '#000000',
+                            border: currentTheme === 'theme3' ? '3px solid #ed2d92' : '1px solid rgba(255,255,255,0.2)',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                            transition: 'transform 0.2s',
+                            transform: currentTheme === 'theme3' ? 'scale(1.1)' : 'scale(1)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontFamily: 'var(--font-heading)',
+                            fontWeight: 'bold',
+                            color: '#ffffff',
+                            fontSize: '14px'
+                        }}
+                    >3</button>
                 </div>
             );
         };
 
         // Dither Background Effect Component
+
+
         const DitherBackground = ({
             waveSpeed = 0.05,
             waveFrequency = 3,
@@ -1091,21 +1229,21 @@
                         vec3 col = mix(backgroundColor, waveColor, f);
                         col = dither(col, gl_FragCoord.xy, pixelSize);
                         
-                        // Vertical gradient fade - toward background color
-                        float fadeStart = 0.5;
-                        float fadeEnd = 0.0;
-                        // fadeFactor: 0.0 at bottom (full background), 1.0 at top (full dither)
-                        float fadeFactor = smoothstep(fadeEnd, fadeStart, uvOriginal.y);
-                        
-                        // Mix final color with background color for the fade
-                        col = mix(backgroundColor, col, fadeFactor);
-                        
                         gl_FragColor = vec4(col, 1.0);
                     }
                 `;
 
-                // Initial colors based on default Theme 1
-                const initialColors = getThemeColors('theme1');
+                const getThemeColors = (themeName) => {
+                    const themes = {
+                        theme1: { bg: [0.957, 0.906, 0.831], wave: [0, 0, 0] },
+                        theme2: { bg: [0.004, 0.651, 0.424], wave: [0, 0, 0] },
+                        theme3: { bg: [0, 0, 0], wave: [1, 1, 1] }
+                    };
+                    return themes[themeName] || themes.theme1;
+                };
+
+                const savedTheme = localStorage.getItem('site-theme') || 'theme1';
+                const initialColors = getThemeColors(savedTheme);
                 const uniforms = {
                     resolution: { value: new THREE.Vector2() },
                     time: { value: 0 },
@@ -1173,10 +1311,14 @@
             return <div ref={containerRef} className="dither-container" />;
         };
 
+        ReactDOM.createRoot(document.getElementById('dock-root')).render(<NavigationDock />);
+
         // Render Theme Switcher
         const themeRoot = document.createElement('div');
         document.body.appendChild(themeRoot);
-        ReactDOM.createRoot(themeRoot).render(<ThemeSwitcher />); // Render Dither background
+        ReactDOM.createRoot(themeRoot).render(<ThemeSwitcher />);
+
+        // Render Dither background
         ReactDOM.createRoot(document.getElementById('dither-bg-root')).render(
             <DitherBackground
                 waveSpeed={0.05}
@@ -1185,7 +1327,7 @@
                 colorNum={4}
                 pixelSize={4}
                 enableMouseInteraction={true}
-                mouseRadius={0.3}
+                mouseRadius={0.45}
             />
         );
     </script>

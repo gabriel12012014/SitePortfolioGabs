@@ -77,10 +77,44 @@ function initSlideshow() {
     }, 1000); // 1 second interval
 }
 
+function setupNavToggle() {
+    const contactSection = document.getElementById('contact');
+    const mainNav = document.querySelector('.main-nav');
+    const siteLogo = document.querySelector('.site-logo');
+
+    if (!contactSection || !mainNav || !siteLogo) return;
+
+    const observerOptions = {
+        root: null, // use viewport
+        threshold: 0.1 // trigger when 10% of the section is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        const themeSwitcher = document.querySelector('.theme-switcher');
+
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Section is in view - hide all fixed elements
+                mainNav.classList.add('nav-hidden');
+                siteLogo.classList.add('logo-hidden');
+                if (themeSwitcher) themeSwitcher.classList.add('theme-hidden');
+            } else {
+                // Section is out of view - show all fixed elements
+                mainNav.classList.remove('nav-hidden');
+                siteLogo.classList.remove('logo-hidden');
+                if (themeSwitcher) themeSwitcher.classList.remove('theme-hidden');
+            }
+        });
+    }, observerOptions);
+
+    observer.observe(contactSection);
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Portfolio loaded correctly.");
     renderProjects();
     setupFilters();
     initSlideshow();
+    setupNavToggle();
 });
