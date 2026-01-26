@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madebygabs.</title>
+    <title>madebygabs.</title>
 
     <!-- SEO -->
     <meta name="description" content="Portfolio de Gabriel - Design, Ilustração, Desenvolvimento Web e Games">
@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="preload" as="image" href="rodasambasp-01.webp">
 
     <!-- Theme Persistence Prep -->
     <script>
@@ -797,12 +798,10 @@
 
         // GridDistortion Slideshow for header
         const GridDistortionSlideshow = () => {
-            // Using the same images as defined in script.js projects array
-            const images = [
-                'project_1.png',
-                'project_2.png',
-                'project_3.png'
-            ];
+            // Use dynamic projects data
+            const images = (window.projectsData || []).map(p => p.image).filter(Boolean);
+            // Fallback if no images found
+            if (images.length === 0) images.push('project_1.webp', 'project_2.webp', 'project_3.webp');
             const [currentIndex, setCurrentIndex] = useState(0);
             const [rotation, setRotation] = useState(() => (Math.random() * 16) - 8);
             const [isGlitching, setIsGlitching] = useState(false);
@@ -1118,6 +1117,7 @@
                         src={project.image}
                         alt={project.title}
                         className="project-image"
+                        loading="lazy"
                     />
                     <div class="project-info">
                         <motion.h3 layoutId={`title-${project.id}`} className="project-title">{project.title}</motion.h3>
@@ -1151,6 +1151,7 @@
                             <img
                                 src={block.url}
                                 alt={block.caption || ''}
+                                loading="lazy"
                                 onClick={() => onImageClick && onImageClick(block.url)}
                                 style={{
                                     width: block.width === 'half' ? '50%' : '100%',
@@ -1641,7 +1642,7 @@
                                     <div style={{
                                         position: 'relative',
                                         zIndex: 2,
-                                        background: 'var(--accent-secondary)',
+                                        background: 'var(--accent-color)',
                                         color: 'var(--bg-color)',
                                         padding: '1.2rem 3rem',
                                         borderRadius: '50px',

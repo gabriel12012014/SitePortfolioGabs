@@ -16,7 +16,7 @@ window.projectsData = [
             { type: 'image', url: 'rodasambasp-01.webp', caption: 'Interface principal do jogo' },
             { type: 'text', content: "Todo o desenvolvimento do jogo foi feito por mim. As ilustrações e interfaces (UI) foram criadas no Adobe Illustrator, seguindo a identidade visual do Carnaval de 2024 do G1. O jogo foi programado utilizando o Construct 3.​​​​​​​" },
             { type: 'text', content: "Os personagens do jogo são figuras importantes do samba de São Paulo, com o objetivo de homenageá-las e também apresentá-las ao jogador.​​​​​​​" },
-            { type: 'image', url: 'rodasambasp-02.png', caption: 'Personagens feitos para o jogo' },
+            { type: 'image', url: 'rodasambasp-02.webp', caption: 'Personagens feitos para o jogo' },
 
             // Exemplo de vídeo (pode adicionar se tiver): 
             // { type: 'video', url: 'https://www.youtube.com/embed/VIDEO_ID' }
@@ -35,7 +35,7 @@ window.projectsData = [
         id: 2,
         title: "Robertinho Soccer",
         category: "Design",
-        image: "project_1.png",
+        image: "project_1.webp",
         longDescription: "Um redesign completo da interface de usuário para um jogo de futebol mobile clássico. O foco foi em melhorar a legibilidade, criar uma identidade visual vibrante e otimizar o fluxo de navegação do usuário. A paleta de cores vibrante traz energia para a experiência esportiva.",
         technologies: ["Figma", "UI/UX", "Mobile Design"],
         link: "#"
@@ -44,7 +44,7 @@ window.projectsData = [
         id: 3,
         title: "Neo-Tokyo Chronicles",
         category: "Game Dev",
-        image: "project_2.png",
+        image: "project_2.webp",
         longDescription: "Jogo de aventura point-and-click ambientado em uma Tóquio futurista. Desenvi a arte em pixel art, os sprites dos personagens e os cenários atmosféricos com iluminação dinâmica. A narrativa explora temas de transhumanismo e inteligência artificial.",
         technologies: ["Unity", "Pixel Art", "C#"],
         link: "#"
@@ -53,7 +53,7 @@ window.projectsData = [
         id: 4,
         title: "Dreamscape",
         category: "Ilustração",
-        image: "project_3.png",
+        image: "project_3.webp",
         longDescription: "Série de ilustrações digitais explorando o mundo dos sonhos e o subconsciente. Cores vibrantes se misturam com formas orgânicas para criar paisagens impossíveis. O processo criativo envolveu pintura digital mesclada com texturas fotográficas.",
         technologies: ["Photoshop", "Digital Painting", "Concept Art"],
         link: "#"
