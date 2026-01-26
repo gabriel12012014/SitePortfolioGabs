@@ -93,19 +93,21 @@ function setupNavToggle() {
     const toggleFixedElements = (hide) => {
         const themeSwitcher = document.querySelector('.theme-switcher');
         const crosshairRoot = document.getElementById('crosshair-root');
+        const dockRoot = document.getElementById('dock-root');
 
         if (hide) {
-            mainNav.classList.add('nav-hidden');
+            // Apenas esconde o logo, navegador e tema ficam visíveis
             siteLogo.classList.add('logo-hidden');
-            if (themeSwitcher) themeSwitcher.classList.add('theme-hidden');
-            // Change crosshair color instead of hiding it
+            // Change crosshair color
             if (crosshairRoot) crosshairRoot.classList.add('crosshair-contact');
+            // Change dock buttons color
+            if (dockRoot) dockRoot.classList.add('dock-contact');
         } else {
-            mainNav.classList.remove('nav-hidden');
             siteLogo.classList.remove('logo-hidden');
-            if (themeSwitcher) themeSwitcher.classList.remove('theme-hidden');
             // Restore crosshair color
             if (crosshairRoot) crosshairRoot.classList.remove('crosshair-contact');
+            // Restore dock buttons color
+            if (dockRoot) dockRoot.classList.remove('dock-contact');
         }
     };
 
@@ -114,7 +116,7 @@ function setupNavToggle() {
 
     const observerOptions = {
         root: null,
-        threshold: 0.8 // trigger when 80% of the section is visible
+        threshold: 0.5 // trigger when 50% of the section is visible
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -134,8 +136,8 @@ function setupNavToggle() {
         const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
         const visiblePercent = visibleHeight / sectionHeight;
 
-        // Hide when 80% of the contact section is visible
-        const shouldHide = visiblePercent >= 0.8;
+        // Hide when 50% of the contact section is visible
+        const shouldHide = visiblePercent >= 0.5;
 
         if (shouldHide !== isContactVisible) {
             isContactVisible = shouldHide;

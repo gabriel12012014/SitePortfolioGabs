@@ -387,6 +387,16 @@ body {
     display: none;
 }
 
+/* Change dock color when in contact section */
+.dock-contact .dock-item {
+    color: var(--bg-color);
+}
+
+.dock-contact .dock-item:hover {
+    color: var(--bg-color);
+    opacity: 0.8;
+}
+
 .hero-content h1 {
     font-family: var(--font-heading);
     font-size: clamp(2.5rem, 8vw, 5rem);
@@ -847,14 +857,41 @@ body {
     text-decoration: none;
     color: var(--bg-color);
     /* Contrast against accent bg */
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    will-change: transform;
+}
+
+.contact-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+/* Alternating rotations like filter buttons */
+.contact-link:nth-child(1) {
+    transform: rotate(-3deg);
+}
+
+.contact-link:nth-child(2) {
+    transform: rotate(4deg);
+}
+
+.contact-link:nth-child(3) {
+    transform: rotate(-2deg);
+}
+
+.contact-link:nth-child(4) {
+    transform: rotate(3deg);
 }
 
 .contact-link:hover {
-    color: var(--text-primary);
-    /* Use primary text color on hover */
-    transform: translateY(-2px);
+    /* Mantém a mesma cor ao passar o mouse */
+    transform: rotate(0deg) scale(1.08);
 }
 
 .massive-footer-text {
@@ -890,6 +927,33 @@ body {
     .massive-footer-text {
         font-size: 18vw;
     }
+
+    .footer-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .location-text {
+        text-align: left !important;
+    }
+}
+
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
+}
+
+.location-text {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--bg-color);
+    opacity: 0.7;
+    text-align: left;
+    letter-spacing: 0.02em;
 }
 
 .attribution-text {
