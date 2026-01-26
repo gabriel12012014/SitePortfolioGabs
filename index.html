@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Gabriel</title>
+    <title>Madebygabs.</title>
 
     <!-- SEO -->
     <meta name="description" content="Portfolio de Gabriel - Design, Ilustração, Desenvolvimento Web e Games">
@@ -1130,7 +1130,7 @@
         };
 
         // Content Block Renderer Component
-        const ContentBlock = ({ block }) => {
+        const ContentBlock = ({ block, onImageClick }) => {
             switch (block.type) {
                 case 'text':
                     return (
@@ -1151,11 +1151,16 @@
                             <img
                                 src={block.url}
                                 alt={block.caption || ''}
+                                onClick={() => onImageClick && onImageClick(block.url)}
                                 style={{
                                     width: block.width === 'half' ? '50%' : '100%',
                                     borderRadius: '8px',
-                                    display: 'block'
+                                    display: 'block',
+                                    cursor: 'zoom-in',
+                                    transition: 'transform 0.2s'
                                 }}
+                                onMouseEnter={(e) => e.target.style.transform = 'scale(1.01)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                             />
                             {block.caption && (
                                 <p style={{
@@ -1198,9 +1203,76 @@
             }
         };
 
+        // Lightbox Component
+        const Lightbox = ({ src, onClose }) => {
+            if (!src) return null;
+
+            return ReactDOM.createPortal(
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        background: 'rgba(0,0,0,0.95)',
+                        zIndex: 10000000, // Above everything
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'zoom-out',
+                        left: 0
+                    }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onClose();
+                    }}
+                >
+                    <motion.img
+                        src={src}
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0.8 }}
+                        style={{
+                            maxWidth: '95%',
+                            maxHeight: '95%',
+                            objectFit: 'contain',
+                            borderRadius: '4px',
+                            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
+                        }}
+                    />
+                    <button
+                        style={{
+                            position: 'absolute',
+                            top: '20px',
+                            right: '20px',
+                            background: 'white',
+                            color: 'black',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '40px',
+                            height: '40px',
+                            fontSize: '24px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 10000001
+                        }}
+                    >✕</button>
+                </motion.div>,
+                document.body
+            );
+        };
+
         // Project Detail Modal (Overlay)
         const ProjectDetail = ({ project, onClose }) => {
             const [showShareMenu, setShowShareMenu] = useState(false);
+            const [lightboxImage, setLightboxImage] = useState(null);
+
 
             const handleCopyLink = async () => {
                 try {
@@ -1317,7 +1389,8 @@
                                     layoutId={`image-${project.id}`}
                                     src={project.image}
                                     alt={project.title}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover', cursor: 'zoom-in' }}
+                                    onClick={() => setLightboxImage(project.image)}
                                 />
                             </div>
 
@@ -1480,7 +1553,11 @@
                                 <div className="project-body">
                                     {project.content ? (
                                         project.content.map((block, index) => (
-                                            <ContentBlock key={index} block={block} />
+                                            <ContentBlock
+                                                key={index}
+                                                block={block}
+                                                onImageClick={(src) => setLightboxImage(src)}
+                                            />
                                         ))
                                     ) : (
                                         // Fallback for projects without modular content
@@ -1583,6 +1660,15 @@
                             )}
                         </motion.div>
                     </motion.div>
+                    {/* Lightbox Rendering */}
+                    <AnimatePresence>
+                        {lightboxImage && (
+                            <Lightbox
+                                src={lightboxImage}
+                                onClose={() => setLightboxImage(null)}
+                            />
+                        )}
+                    </AnimatePresence>
                 </motion.div >,
                 document.getElementById('modal-root')
             );

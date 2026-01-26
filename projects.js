@@ -14,7 +14,10 @@ window.projectsData = [
         content: [
             { type: 'text', content: "Para essa matéria, foi desenvolvido um jogo onde o jogador podia criar sua própria Roda de Samba. O jogador escolhia entre os instrumentos disponíveis e os colocava sobre os personagens, que então acordavam e começavam a tocar." },
             { type: 'image', url: 'rodasambasp-01.webp', caption: 'Interface principal do jogo' },
-            { type: 'text', content: "O desafio foi criar uma experiência interativa leve e divertida que funcionasse bem em dispositivos móveis. A ilustração seguiu um estilo vibrante e caricato para combinar com o clima de carnaval." }
+            { type: 'text', content: "Todo o desenvolvimento do jogo foi feito por mim. As ilustrações e interfaces (UI) foram criadas no Adobe Illustrator, seguindo a identidade visual do Carnaval de 2024 do G1. O jogo foi programado utilizando o Construct 3.​​​​​​​" },
+            { type: 'text', content: "Os personagens do jogo são figuras importantes do samba de São Paulo, com o objetivo de homenageá-las e também apresentá-las ao jogador.​​​​​​​" },
+            { type: 'image', url: 'rodasambasp-02.png', caption: 'Personagens feitos para o jogo' },
+
             // Exemplo de vídeo (pode adicionar se tiver): 
             // { type: 'video', url: 'https://www.youtube.com/embed/VIDEO_ID' }
         ],
