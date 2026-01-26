@@ -1,64 +1,18 @@
-const projects = [
-    {
-        title: "Robertinho Soccer",
-        category: "Design",
-        image: "project_1.png",
-        description: "Exploração visual moderna para interfaces web."
-    },
-    {
-        title: "Neo-Tokyo Chronicles",
-        category: "Game Dev",
-        image: "project_2.png",
-        description: "Conceito de jogo cyberpunk pixel art."
-    },
-    {
-        title: "Dreamscape",
-        category: "Ilustração",
-        image: "project_3.png",
-        description: "Ilustração digital surrealista."
-    }
-];
+// Os dados dos projetos agora estão no arquivo 'projects.js'
+// O script projects.js deve ser carregado ANTES deste arquivo no HTML.
 
-const gridContainer = document.getElementById('project-grid');
+// Projects structure kept for reference if needed elsewhere (like slideshow)
+// It will use the global variable defined in projects.js
+const projects = window.projectsData || [];
 
-function renderProjects(category = 'all') {
-    const filteredProjects = category === 'all'
-        ? projects
-        : projects.filter(project => project.category === category);
-
-    gridContainer.innerHTML = filteredProjects.map((project, index) => `
-        <article class="project-card fade-in-up" style="animation-delay: ${index * 0.1}s">
-            <img src="${project.image}" alt="${project.title}" class="project-image" loading="lazy">
-            <div class="project-info">
-                <h3 class="project-title">${project.title}</h3>
-                <p class="project-category">${project.category}</p>
-            </div>
-        </article>
-    `).join('');
-}
-
-function setupFilters() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            btn.classList.add('active');
-
-            // Filter projects
-            const filterValue = btn.getAttribute('data-filter');
-            renderProjects(filterValue);
-        });
-    });
-}
+// Note: Main project grid is now rendered via React in index.html
+// Old renderProjects and setupFilters functions removed to avoid conflicts.
 
 function initSlideshow() {
     const slideshowContainer = document.getElementById('header-slideshow');
     // Check if element exists
     if (!slideshowContainer) {
-        console.log('Slideshow container not found, skipping slideshow init');
+        // Silently skip if container not present (might be replaced by React component)
         return;
     }
     // Create slide elements with random rotation
@@ -73,6 +27,8 @@ function initSlideshow() {
     }).join('');
 
     const slides = document.querySelectorAll('.slide-bg');
+    if (slides.length === 0) return;
+
     let currentSlide = 0;
 
     setInterval(() => {
@@ -153,31 +109,16 @@ function setupNavToggle() {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Portfolio loaded correctly.");
+    // Nav and Scroll setup
+    setupNavToggle();
+    setupSmoothScroll();
+    createCurvedText();
+    setupCrosshair();
 
-    // Always run setupNavToggle first - it's critical
-    try {
-        setupNavToggle();
-        console.log("setupNavToggle executed successfully");
-    } catch (e) {
-        console.error("Error in setupNavToggle:", e);
-    }
-
-    try {
-        renderProjects();
-    } catch (e) {
-        console.error("Error in renderProjects:", e);
-    }
-
-    try {
-        setupFilters();
-    } catch (e) {
-        console.error("Error in setupFilters:", e);
-    }
-
+    // Slideshow check
     try {
         initSlideshow();
     } catch (e) {
-        console.error("Error in initSlideshow:", e);
+        console.warn("Slideshow init skipped or failed:", e);
     }
 });
