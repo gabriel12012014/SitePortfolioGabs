@@ -1084,7 +1084,20 @@
         };
 
         const ThemeSwitcher = () => {
-            const [currentTheme, setCurrentTheme] = useState(() => localStorage.getItem('site-theme') || 'theme1');
+            const [currentTheme, setCurrentTheme] = useState(() => {
+                // Random theme on load
+                const themes = ['theme1', 'theme2', 'theme3'];
+                return themes[Math.floor(Math.random() * themes.length)];
+            });
+
+            // Apply theme on mount
+            useEffect(() => {
+                document.documentElement.setAttribute('data-theme', currentTheme);
+                // Dispatch event so other components (like GridDistortion) update
+                window.dispatchEvent(new CustomEvent('theme-change', {
+                    detail: { theme: currentTheme }
+                }));
+            }, []);
 
             const setTheme = (theme) => {
                 setCurrentTheme(theme);
