@@ -1,32 +1,36 @@
-// Os dados dos projetos agora estão no arquivo 'projects.js'
-// O script projects.js deve ser carregado ANTES deste arquivo no HTML.
+// Basic Setup
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
 
-// Projects structure kept for reference if needed elsewhere (like slideshow)
-// It will use the global variable defined in projects.js
-const projects = window.projectsData || [];
+function createCurvedText() {
+    const text = document.querySelector('.circle-text p');
+    if (!text) return;
+    text.innerHTML = text.innerText.split('').map(
+        (char, i) => `<span style="transform:rotate(${i * 8.5}deg)">${char}</span>`
+    ).join('');
+}
 
-// Note: Main project grid is now rendered via React in index.html
-// Old renderProjects and setupFilters functions removed to avoid conflicts.
+function setupCrosshair() {
+    const root = document.getElementById('crosshair-root');
+    if (!root) return;
+    // React component handles this
+}
 
 function initSlideshow() {
-    const slideshowContainer = document.getElementById('header-slideshow');
-    // Check if element exists
-    if (!slideshowContainer) {
-        // Silently skip if container not present (might be replaced by React component)
-        return;
-    }
-    // Create slide elements with random rotation
-    slideshowContainer.innerHTML = projects.map((project, index) => {
-        const rotation = (Math.random() * 12) - 6; // Random rotation between -6deg and 6deg
-        return `
-            <img src="${project.image}" 
-                 class="slide-bg ${index === 0 ? 'active' : ''}" 
-                 alt="Background ${index}"
-                 style="transform: rotate(${rotation}deg)">
-        `;
-    }).join('');
-
-    const slides = document.querySelectorAll('.slide-bg');
+    const slides = document.querySelectorAll('.slide');
     if (slides.length === 0) return;
 
     let currentSlide = 0;
@@ -37,6 +41,84 @@ function initSlideshow() {
         slides[currentSlide].classList.add('active');
     }, 1000); // 1 second interval
 }
+
+// Global function for direct onclick access
+window.copyEmail = async function (event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    // Hardcoded email for reliability
+    const email = "gabriel12012014@outlook.com";
+    console.log("DEBUG: Global copyEmail called for", email);
+
+    // 1. Helper: Fallback Copy
+    function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Fallback copy result:', msg);
+            return successful;
+        } catch (err) {
+            console.error('Fallback copy failed', err);
+            return false;
+        } finally {
+            document.body.removeChild(textArea);
+        }
+    }
+
+    // 2. Helper: Show Toast
+    function showToast() {
+        const toast = document.getElementById('toast-notification');
+        if (toast) {
+            toast.classList.add('toast-visible');
+            toast.classList.remove('toast-hidden');
+            setTimeout(() => {
+                toast.classList.remove('toast-visible');
+                toast.classList.add('toast-hidden');
+            }, 3000);
+        } else {
+            console.error("Toast element not found");
+        }
+    }
+
+    // 3. Main Copy Logic
+    if (!navigator.clipboard) {
+        console.warn("Clipboard API missing, using fallback");
+        if (fallbackCopyTextToClipboard(email)) {
+            showToast();
+        } else {
+            prompt("Copie manualmente:", email);
+        }
+        return false;
+    }
+
+    try {
+        await navigator.clipboard.writeText(email);
+        console.log("Clipboard API success");
+        showToast();
+    } catch (err) {
+        console.error("Clipboard API failed", err);
+        if (fallbackCopyTextToClipboard(email)) {
+            showToast();
+        } else {
+            prompt("Copie manualmente:", email);
+        }
+    }
+
+    return false;
+};
 
 function setupNavToggle() {
     const contactSection = document.getElementById('contact');
@@ -114,6 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSmoothScroll();
     createCurvedText();
     setupCrosshair();
+    // setupEmailCopy(); // Removed
+
 
     // Slideshow check
     try {

@@ -51,6 +51,81 @@
 
     </header>
 
+
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <!-- Left: Profile Info -->
+                <div class="about-profile fade-in-up delay-1">
+                    <div class="profile-frame">
+                        <!-- Placeholder image - replace with real one -->
+                        <img src="gabs.jpg" alt="Gabs" class="profile-img">
+                    </div>
+                    <div class="profile-headers">
+                        <h2 class="nickname">Gabs</h2>
+                        <h3 class="full-name">Gabriel Santos</h3>
+                    </div>
+                    <div class="profile-tags">
+                        <span class="tag">Design</span>
+                        <span class="tag">Desenvolvimento</span>
+                        <span class="tag">Jogos</span>
+                    </div>
+                    <p class="profile-bio">
+                        Oi! Sou o Gabriel, mas pode me chamar de Gabs. Sou apaixonado por criar experiências digitais
+                        que misturam design, código e interatividade. Transformo ideias malucas em realidade pixelada.
+                    </p>
+                </div>
+
+                <!-- Right: Resume -->
+                <div class="about-resume fade-in-up delay-2">
+                    <div class="resume-block">
+                        <h4 class="resume-title">
+                            <span class="icon">🎓</span> Formação & Cursos
+                        </h4>
+                        <ul class="resume-list">
+                            <li>
+                                <span class="year">2020 - 2024</span>
+                                <div class="details">
+                                    <strong>Design de Games</strong>
+                                    <span>Universidade Anhembi Morumbi</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="year">2023</span>
+                                <div class="details">
+                                    <strong>UX/UI Design Avançado</strong>
+                                    <span>Google Certification</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="resume-block">
+                        <h4 class="resume-title">
+                            <span class="icon">💼</span> Experiência
+                        </h4>
+                        <ul class="resume-list">
+                            <li>
+                                <span class="year">2023 - Atual</span>
+                                <div class="details">
+                                    <strong>Designer & Dev Freelancer</strong>
+                                    <span>Autônomo</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="year">2021 - 2022</span>
+                                <div class="details">
+                                    <strong>Estagiário de Arte</strong>
+                                    <span>Agência Criativa XYZ</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="work" class="work-section">
         <!-- CurvedLoop Title - Full Width -->
         <div id="curved-title-root"></div>
@@ -64,8 +139,10 @@
     <section id="contact" class="contact-section">
         <div class="contact-container">
             <h2 class="contact-title">Manda um zap!</h2>
+            <p class="contact-subtitle">Clique em uma das redes abaixo para visitar minha rede social!</p>
             <div class="contact-links-row">
-                <a href="mailto:gabriel12012014@outlook.com" class="contact-link">
+                <a href="javascript:void(0)" onclick="copyEmail(event)" id="email-copy-link" class="contact-link"
+                    data-email="gabriel12012014@outlook.com">
                     <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -97,6 +174,14 @@
                     </svg>
                     itch.io
                 </a>
+                <a href="https://www.linkedin.com/in/gabsputs/" target="_blank" class="contact-link">
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                    LinkedIn
+                </a>
             </div>
         </div>
 
@@ -109,6 +194,11 @@
             </div>
         </div>
     </section>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="toast-hidden">
+        Email copiado! 📋
+    </div>
 
 
 
@@ -1026,7 +1116,7 @@
                                 position: 'fixed',
                                 top: 0,
                                 left: `${index * (100 / 6)}%`,
-                                width: `${100 / 6}%`,
+                                width: `calc(${100 / 6}% + 2px)`,
                                 height: '100%',
                                 background: 'var(--accent-color)',
                                 zIndex: 99999,
@@ -1570,36 +1660,7 @@
 
 
 
-                                {/* Credits Section */}
-                                {project.credits && project.credits.length > 0 && (
-                                    <div style={{
-                                        borderTop: '1px solid rgba(0,0,0,0.1)',
-                                        paddingTop: '1.5rem',
-                                        marginTop: '1rem',
-                                        marginBottom: '3rem'
-                                    }}>
-                                        <h4 style={{
-                                            fontFamily: 'var(--font-heading)',
-                                            marginBottom: '1rem',
-                                            fontSize: '1.1rem'
-                                        }}>Créditos</h4>
-                                        <ul style={{
-                                            listStyle: 'none',
-                                            padding: 0,
-                                            display: 'grid',
-                                            gap: '0.5rem'
-                                        }}>
-                                            {project.credits.map((credit, idx) => (
-                                                <li key={idx} style={{
-                                                    fontSize: '1rem',
-                                                    color: 'var(--text-secondary)'
-                                                }}>
-                                                    • {credit}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
+
 
 
                             </div>
@@ -1616,7 +1677,7 @@
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         width: '100%',
-                                        height: '350px', // Taller for impact
+                                        height: '200px', // Smaller height
                                         position: 'relative',
                                         textDecoration: 'none',
                                         marginTop: 0, // No margin top needed
@@ -1658,6 +1719,45 @@
                                         Veja esse projeto aqui ↗
                                     </div>
                                 </a>
+                            )}
+
+                            {/* Credits Section (Moved) */}
+                            {project.credits && project.credits.length > 0 && (
+                                <div style={{
+                                    maxWidth: '900px',
+                                    margin: '0 auto',
+                                    padding: '2.5rem',
+                                    paddingTop: '2rem' // Spacing after banner
+                                }}>
+                                    <div style={{
+                                        // Removed borderTop as banner acts as divider
+                                        // borderTop: '1px solid rgba(0,0,0,0.1)',
+                                        // paddingTop: '1.5rem',
+                                        marginTop: '0',
+                                        marginBottom: '3rem'
+                                    }}>
+                                        <h4 style={{
+                                            fontFamily: 'var(--font-heading)',
+                                            marginBottom: '1rem',
+                                            fontSize: '1.1rem'
+                                        }}>Créditos</h4>
+                                        <ul style={{
+                                            listStyle: 'none',
+                                            padding: 0,
+                                            display: 'grid',
+                                            gap: '0.5rem'
+                                        }}>
+                                            {project.credits.map((credit, idx) => (
+                                                <li key={idx} style={{
+                                                    fontSize: '1rem',
+                                                    color: 'var(--text-primary)' // Ensure visibility on bg
+                                                }}>
+                                                    • {credit}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
                             )}
                         </motion.div>
                     </motion.div>
@@ -1704,17 +1804,30 @@
 
             const selectedProject = projectsData.find(p => p.id === selectedId);
 
-            // Lock body scroll when modal is open
+            // Lock body scroll and pause background animation when modal is open
             useEffect(() => {
                 if (selectedId) {
                     document.body.style.overflow = 'hidden';
+                    window.dispatchEvent(new CustomEvent('modal-open'));
                 } else {
                     document.body.style.overflow = '';
+                    window.dispatchEvent(new CustomEvent('modal-closed'));
                 }
             }, [selectedId]);
 
             return (
                 <div className="container" style={{ paddingTop: '2rem' }}>
+
+                    <p style={{
+                        fontFamily: 'var(--font-heading)',
+                        fontSize: 'clamp(1.1rem, 3vw, 1.3rem)',
+                        marginBottom: '2rem',
+                        fontWeight: '500',
+                        opacity: 0.9
+                    }}>
+                        Conheça um pouco mais sobre os projetos em que eu trabalhei!
+                    </p>
+
                     {/* Filters */}
                     <div className="filter-buttons" style={{ marginBottom: '3rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                         {categories.map(cat => (
@@ -2092,11 +2205,20 @@
                 };
                 window.addEventListener('theme-change', handleThemeChange);
 
+                // Optimization: Pause animation when modal is open
+                let paused = false;
+                const handlePause = () => { paused = true; };
+                const handleResume = () => { paused = false; };
+                window.addEventListener('modal-open', handlePause);
+                window.addEventListener('modal-closed', handleResume);
+
                 let animationId;
                 const animate = () => {
                     animationId = requestAnimationFrame(animate);
-                    uniforms.time.value += 0.016;
-                    renderer.render(scene, camera);
+                    if (!paused) {
+                        uniforms.time.value += 0.016;
+                        renderer.render(scene, camera);
+                    }
                 };
                 animate();
 
@@ -2105,6 +2227,8 @@
                     window.removeEventListener('resize', handleResize);
                     window.removeEventListener('mousemove', handleMouseMove);
                     window.removeEventListener('theme-change', handleThemeChange);
+                    window.removeEventListener('modal-open', handlePause);
+                    window.removeEventListener('modal-closed', handleResume);
                     renderer.dispose();
                     geometry.dispose();
                     material.dispose();
