@@ -53,13 +53,15 @@
 
 
     <section id="about" class="about-section">
+        <!-- CurvedLoop Title - Full Width -->
+        <div id="curved-about-title-root"></div>
         <div class="container">
             <div class="about-grid">
                 <!-- Left: Profile Info -->
                 <div class="about-profile fade-in-up delay-1">
                     <div class="profile-frame">
                         <!-- Placeholder image - replace with real one -->
-                        <img src="gabs.jpg" alt="Gabs" class="profile-img">
+                        <img src="gabs.jpg" alt="Gabs" class="profile-img" loading="lazy">
                     </div>
                     <div class="profile-headers">
                         <h2 class="nickname">Gabs</h2>
@@ -70,57 +72,89 @@
                         <span class="tag">Desenvolvimento</span>
                         <span class="tag">Jogos</span>
                     </div>
-                    <p class="profile-bio">
-                        Oi! Sou o Gabriel, mas pode me chamar de Gabs. Sou apaixonado por criar experiências digitais
-                        que misturam design, código e interatividade. Transformo ideias malucas em realidade pixelada.
-                    </p>
                 </div>
 
-                <!-- Right: Resume -->
-                <div class="about-resume fade-in-up delay-2">
-                    <div class="resume-block">
-                        <h4 class="resume-title">
-                            <span class="icon">🎓</span> Formação & Cursos
-                        </h4>
-                        <ul class="resume-list">
-                            <li>
-                                <span class="year">2020 - 2024</span>
-                                <div class="details">
-                                    <strong>Design de Games</strong>
-                                    <span>Universidade Anhembi Morumbi</span>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="year">2023</span>
-                                <div class="details">
-                                    <strong>UX/UI Design Avançado</strong>
-                                    <span>Google Certification</span>
-                                </div>
-                            </li>
-                        </ul>
+                <!-- Right: Interactive Accordion -->
+                <div class="about-interactive fade-in-up delay-2">
+
+                    <!-- Accordion Item 1: Sobre Mim -->
+                    <div class="accordion-item active">
+                        <button class="accordion-header">
+                            <span class="accordion-title">Sobre Mim</span>
+                            <span class="accordion-icon">−</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p class="profile-bio">
+                                    Oi! Sou o Gabriel, mas pode me chamar de Gabs. Sou apaixonado por criar experiências
+                                    digitais
+                                    que misturam design, código e interatividade. Transformo ideias malucas em realidade
+                                    pixelada.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="resume-block">
-                        <h4 class="resume-title">
-                            <span class="icon">💼</span> Experiência
-                        </h4>
-                        <ul class="resume-list">
-                            <li>
-                                <span class="year">2023 - Atual</span>
-                                <div class="details">
-                                    <strong>Designer & Dev Freelancer</strong>
-                                    <span>Autônomo</span>
+                    <!-- Accordion Item 2: Formação -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-title">Formação & Cursos</span>
+                            <span class="accordion-icon">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <div class="resume-block">
+                                    <ul class="resume-list">
+                                        <li>
+                                            <span class="year">2020 - 2024</span>
+                                            <div class="details">
+                                                <strong>Design de Games</strong>
+                                                <span>Universidade Anhembi Morumbi</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="year">2023</span>
+                                            <div class="details">
+                                                <strong>UX/UI Design Avançado</strong>
+                                                <span>Google Certification</span>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </li>
-                            <li>
-                                <span class="year">2021 - 2022</span>
-                                <div class="details">
-                                    <strong>Estagiário de Arte</strong>
-                                    <span>Agência Criativa XYZ</span>
-                                </div>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Accordion Item 3: Experiência -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-title">Experiência</span>
+                            <span class="accordion-icon">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <div class="resume-block">
+                                    <ul class="resume-list">
+                                        <li>
+                                            <span class="year">2023 - Atual</span>
+                                            <div class="details">
+                                                <strong>Designer & Dev Freelancer</strong>
+                                                <span>Autônomo</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="year">2021 - 2022</span>
+                                            <div class="details">
+                                                <strong>Estagiário de Arte</strong>
+                                                <span>Agência Criativa XYZ</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -150,7 +184,8 @@
                     </svg>
                     gabriel12012014@outlook.com
                 </a>
-                <a href="https://wa.me/5511991878100" target="_blank" class="contact-link">
+                <a href="https://wa.me/5511991878100" target="_blank" class="contact-link"
+                    onclick="copyWhatsApp(event)">
                     <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -197,7 +232,11 @@
 
     <!-- Toast Notification -->
     <div id="toast-notification" class="toast-hidden">
-        Email copiado! 📋
+        <span id="toast-message">Email copiado!</span>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor">
+            <path
+                d="M360-600v-80h240v80H360Zm0 120v-80h240v80H360Zm-160 320q-33 0-56.5-23.5T120-240v-480q0-33 23.5-56.5T200-800h120q13-29 39.5-44.5T420-860h120q32 0 58.5 15.5T638-800h122q33 0 56.5 23.5T840-720v480q0 33-23.5 56.5T760-160H200Zm0-80h560v-480h-80v80H280v-80h-80v480Zm0 0v-480 480Z" />
+        </svg>
     </div>
 
 
@@ -206,16 +245,17 @@
     <div id="crosshair-root"></div>
 
     <!-- React, Babel, GSAP and Three.js CDN -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <!-- React, Babel, GSAP and Three.js CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
 
     <!-- Crosshair Component (Babel) -->
     <script type="text/babel">
-        const { useRef, useEffect, useState, useId, Children, cloneElement, useMemo } = React;
+        const { useRef, useEffect, useState, useId, Children, cloneElement, useMemo, useCallback, Fragment } = React;
         const lerp = (a, b, n) => (1 - n) * a + n * b;
         const getMousePos = (e, container) => {
             if (container) {
@@ -719,6 +759,17 @@
             />
         );
 
+        // Render CurvedLoop About title
+        ReactDOM.createRoot(document.getElementById('curved-about-title-root')).render(
+            <CurvedLoop
+                marqueeText="✦ Sobre mim ✦ Sobre mim ✦ Sobre mim "
+                speed={1.5}
+                curveAmount={150}
+                direction="left"
+                interactive
+            />
+        );
+
         // GridDistortion Component with Three.js
         const GridDistortion = ({ grid = 15, mouse = 0.1, strength = 0.15, relaxation = 0.9, imageSrc }) => {
             const containerRef = useRef(null);
@@ -1081,14 +1132,42 @@
 
             useEffect(() => {
                 document.body.classList.add('preloading');
-                // Intro duration: 3.0s (approx 2s spin + 1s hold)
-                const exitTimer = setTimeout(() => {
-                    setVisible(false);
-                    document.body.classList.remove('preloading');
-                }, 3000);
+
+                // State to track conditions
+                let isMounted = true;
+                let minTimeElapsed = false;
+                let windowLoaded = document.readyState === 'complete';
+
+                const checkDone = () => {
+                    if (minTimeElapsed && windowLoaded && isMounted) {
+                        setVisible(false);
+                        document.body.classList.remove('preloading');
+                    }
+                };
+
+                // 1. Minimum branding time (2.5s)
+                const minTimer = setTimeout(() => {
+                    minTimeElapsed = true;
+                    checkDone();
+                }, 2500);
+
+                // 2. Listen for window load (if not already loaded)
+                const handleLoad = () => {
+                    windowLoaded = true;
+                    checkDone();
+                };
+
+                if (!windowLoaded) {
+                    window.addEventListener('load', handleLoad);
+                } else {
+                    // Already loaded
+                    checkDone();
+                }
 
                 return () => {
-                    clearTimeout(exitTimer);
+                    isMounted = false;
+                    clearTimeout(minTimer);
+                    window.removeEventListener('load', handleLoad);
                     document.body.classList.remove('preloading');
                 };
             }, []);
@@ -1191,33 +1270,7 @@
         // Helper to format category display
         const getCategoryLabel = (cat) => Array.isArray(cat) ? cat.join(" • ") : cat;
 
-        // Project Card Component
-        const ProjectCard = ({ project, onClick }) => {
-            return (
-                <motion.article
-                    layoutId={`card-${project.id}`}
-                    className="project-card"
-                    onClick={onClick}
-                    whileHover={{ scale: 1.02, y: -5 }}
-                    transition={{ duration: 0.3 }}
-                    style={{ cursor: 'pointer' }}
-                >
-                    <motion.img
-                        layoutId={`image-${project.id}`}
-                        src={project.image}
-                        alt={project.title}
-                        className="project-image"
-                        loading="lazy"
-                    />
-                    <div class="project-info">
-                        <motion.h3 layoutId={`title-${project.id}`} className="project-title">{project.title}</motion.h3>
-                        <motion.p layoutId={`cat-${project.id}`} className="project-category">
-                            {getCategoryLabel(project.category)}
-                        </motion.p>
-                    </div>
-                </motion.article>
-            );
-        };
+
 
         // Content Block Renderer Component
         const ContentBlock = ({ block, onImageClick }) => {
@@ -1775,6 +1828,526 @@
             );
         };
 
+        // MAGIC BENTO COMPONENTS
+        const DEFAULT_PARTICLE_COUNT = 12;
+        const DEFAULT_SPOTLIGHT_RADIUS = 300;
+        const DEFAULT_GLOW_COLOR = '132, 0, 255';
+        const MOBILE_BREAKPOINT = 768;
+
+        const createParticleElement = (x, y, color) => {
+            const el = document.createElement('div');
+            el.className = 'particle';
+            el.style.cssText = `
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                background: rgba(${color || DEFAULT_GLOW_COLOR}, 1);
+                box-shadow: 0 0 6px rgba(${color || DEFAULT_GLOW_COLOR}, 0.6);
+                pointer-events: none;
+                z-index: 100;
+                left: ${x}px;
+                top: ${y}px;
+            `;
+            return el;
+        };
+
+        const calculateSpotlightValues = radius => ({
+            proximity: radius * 0.5,
+            fadeDistance: radius * 0.75
+        });
+
+        const updateCardGlowProperties = (card, mouseX, mouseY, glow, radius) => {
+            const rect = card.getBoundingClientRect();
+            const relativeX = ((mouseX - rect.left) / rect.width) * 100;
+            const relativeY = ((mouseY - rect.top) / rect.height) * 100;
+
+            card.style.setProperty('--glow-x', `${relativeX}%`);
+            card.style.setProperty('--glow-y', `${relativeY}%`);
+            card.style.setProperty('--glow-intensity', glow.toString());
+            card.style.setProperty('--glow-radius', `${radius}px`);
+        };
+
+        const ParticleCard = ({
+            children,
+            className = '',
+            disableAnimations = false,
+            style,
+            particleCount = DEFAULT_PARTICLE_COUNT,
+            glowColor = DEFAULT_GLOW_COLOR,
+            enableTilt = true,
+            clickEffect = false,
+            enableMagnetism = false,
+            onClick
+        }) => {
+            const cardRef = useRef(null);
+            const particlesRef = useRef([]);
+            const timeoutsRef = useRef([]);
+            const isHoveredRef = useRef(false);
+            const memoizedParticles = useRef([]);
+            const particlesInitialized = useRef(false);
+            const magnetismAnimationRef = useRef(null);
+
+            const initializeParticles = React.useCallback(() => {
+                if (particlesInitialized.current || !cardRef.current) return;
+
+                const { width, height } = cardRef.current.getBoundingClientRect();
+                memoizedParticles.current = Array.from({ length: particleCount }, () =>
+                    createParticleElement(Math.random() * width, Math.random() * height, glowColor)
+                );
+                particlesInitialized.current = true;
+            }, [particleCount, glowColor]);
+
+            const clearAllParticles = React.useCallback(() => {
+                timeoutsRef.current.forEach(clearTimeout);
+                timeoutsRef.current = [];
+                magnetismAnimationRef.current?.kill();
+
+                particlesRef.current.forEach(particle => {
+                    gsap.to(particle, {
+                        scale: 0,
+                        opacity: 0,
+                        duration: 0.3,
+                        ease: 'back.in(1.7)',
+                        onComplete: () => {
+                            particle.parentNode?.removeChild(particle);
+                        }
+                    });
+                });
+                particlesRef.current = [];
+            }, []);
+
+            const animateParticles = React.useCallback(() => {
+                if (!cardRef.current || !isHoveredRef.current) return;
+
+                if (!particlesInitialized.current) {
+                    initializeParticles();
+                }
+
+                memoizedParticles.current.forEach((particle, index) => {
+                    const timeoutId = setTimeout(() => {
+                        if (!isHoveredRef.current || !cardRef.current) return;
+
+                        const clone = particle.cloneNode(true);
+                        cardRef.current.appendChild(clone);
+                        particlesRef.current.push(clone);
+
+                        gsap.fromTo(clone, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
+
+                        gsap.to(clone, {
+                            x: (Math.random() - 0.5) * 100,
+                            y: (Math.random() - 0.5) * 100,
+                            rotation: Math.random() * 360,
+                            duration: 2 + Math.random() * 2,
+                            ease: 'none',
+                            repeat: -1,
+                            yoyo: true
+                        });
+
+                        gsap.to(clone, {
+                            opacity: 0.3,
+                            duration: 1.5,
+                            ease: 'power2.inOut',
+                            repeat: -1,
+                            yoyo: true
+                        });
+                    }, index * 100);
+
+                    timeoutsRef.current.push(timeoutId);
+                });
+            }, [initializeParticles]);
+
+            useEffect(() => {
+                if (disableAnimations || !cardRef.current) return;
+
+                const element = cardRef.current;
+
+                const handleMouseEnter = () => {
+                    isHoveredRef.current = true;
+                    animateParticles();
+
+                    if (enableTilt) {
+                        gsap.to(element, {
+                            rotateX: 5,
+                            rotateY: 5,
+                            duration: 0.3,
+                            ease: 'power2.out',
+                            transformPerspective: 1000
+                        });
+                    }
+                };
+
+                const handleMouseLeave = () => {
+                    isHoveredRef.current = false;
+                    clearAllParticles();
+
+                    if (enableTilt) {
+                        gsap.to(element, {
+                            rotateX: 0,
+                            rotateY: 0,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    }
+
+                    if (enableMagnetism) {
+                        gsap.to(element, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    }
+                };
+
+                const handleMouseMove = e => {
+                    if (!enableTilt && !enableMagnetism) return;
+
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    if (enableTilt) {
+                        const rotateX = ((y - centerY) / centerY) * -10;
+                        const rotateY = ((x - centerX) / centerX) * 10;
+
+                        gsap.to(element, {
+                            rotateX,
+                            rotateY,
+                            duration: 0.1,
+                            ease: 'power2.out',
+                            transformPerspective: 1000
+                        });
+                    }
+
+                    if (enableMagnetism) {
+                        const magnetX = (x - centerX) * 0.05;
+                        const magnetY = (y - centerY) * 0.05;
+
+                        magnetismAnimationRef.current = gsap.to(element, {
+                            x: magnetX,
+                            y: magnetY,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    }
+                };
+
+                const handleClick = e => {
+                    if (onClick) onClick(); // Custom handler
+
+                    if (!clickEffect) return;
+
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const maxDistance = Math.max(
+                        Math.hypot(x, y),
+                        Math.hypot(x - rect.width, y),
+                        Math.hypot(x, y - rect.height),
+                        Math.hypot(x - rect.width, y - rect.height)
+                    );
+
+                    const ripple = document.createElement('div');
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${maxDistance * 2}px;
+                        height: ${maxDistance * 2}px;
+                        border-radius: 50%;
+                        background: radial-gradient(circle, rgba(${glowColor}, 0.4) 0%, rgba(${glowColor}, 0.2) 30%, transparent 70%);
+                        left: ${x - maxDistance}px;
+                        top: ${y - maxDistance}px;
+                        pointer-events: none;
+                        z-index: 1000;
+                    `;
+
+                    element.appendChild(ripple);
+
+                    gsap.fromTo(
+                        ripple,
+                        {
+                            scale: 0,
+                            opacity: 1
+                        },
+                        {
+                            scale: 1,
+                            opacity: 0,
+                            duration: 0.8,
+                            ease: 'power2.out',
+                            onComplete: () => ripple.remove()
+                        }
+                    );
+                };
+
+                element.addEventListener('mouseenter', handleMouseEnter);
+                element.addEventListener('mouseleave', handleMouseLeave);
+                element.addEventListener('mousemove', handleMouseMove);
+                element.addEventListener('click', handleClick);
+
+                return () => {
+                    isHoveredRef.current = false;
+                    element.removeEventListener('mouseenter', handleMouseEnter);
+                    element.removeEventListener('mouseleave', handleMouseLeave);
+                    element.removeEventListener('mousemove', handleMouseMove);
+                    element.removeEventListener('click', handleClick);
+                    clearAllParticles();
+                };
+            }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor, onClick]);
+
+            return (
+                <div
+                    ref={cardRef}
+                    className={`${className} particle-container`}
+                    style={{ ...style, position: 'relative', overflow: 'hidden' }}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const GlobalSpotlight = ({
+            gridRef,
+            disableAnimations = false,
+            enabled = true,
+            spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
+            glowColor = DEFAULT_GLOW_COLOR
+        }) => {
+            const spotlightRef = useRef(null);
+            const isInsideSection = useRef(false);
+
+            useEffect(() => {
+                if (disableAnimations || !gridRef?.current || !enabled) return;
+
+                const spotlight = document.createElement('div');
+                spotlight.className = 'global-spotlight';
+                spotlight.style.cssText = `
+              position: fixed;
+              width: 800px;
+              height: 800px;
+              border-radius: 50%;
+              pointer-events: none;
+              background: radial-gradient(circle,
+                rgba(${glowColor}, 0.15) 0%,
+                rgba(${glowColor}, 0.08) 15%,
+                rgba(${glowColor}, 0.04) 25%,
+                rgba(${glowColor}, 0.02) 40%,
+                rgba(${glowColor}, 0.01) 65%,
+                transparent 70%
+              );
+              z-index: 200;
+              opacity: 0;
+              transform: translate(-50%, -50%);
+              mix-blend-mode: screen;
+            `;
+                document.body.appendChild(spotlight);
+                spotlightRef.current = spotlight;
+
+                const handleMouseMove = e => {
+                    if (!spotlightRef.current || !gridRef.current) return;
+
+                    const section = gridRef.current.closest('.bento-section');
+                    const rect = section?.getBoundingClientRect();
+                    const mouseInside =
+                        rect && e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+
+                    isInsideSection.current = mouseInside || false;
+                    const cards = gridRef.current.querySelectorAll('.magic-bento-card');
+
+                    if (!mouseInside) {
+                        gsap.to(spotlightRef.current, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                        cards.forEach(card => {
+                            card.style.setProperty('--glow-intensity', '0');
+                        });
+                        return;
+                    }
+
+                    const { proximity, fadeDistance } = calculateSpotlightValues(spotlightRadius);
+                    let minDistance = Infinity;
+
+                    cards.forEach(card => {
+                        const cardElement = card;
+                        const cardRect = cardElement.getBoundingClientRect();
+                        const centerX = cardRect.left + cardRect.width / 2;
+                        const centerY = cardRect.top + cardRect.height / 2;
+                        const distance =
+                            Math.hypot(e.clientX - centerX, e.clientY - centerY) - Math.max(cardRect.width, cardRect.height) / 2;
+                        const effectiveDistance = Math.max(0, distance);
+
+                        minDistance = Math.min(minDistance, effectiveDistance);
+
+                        let glowIntensity = 0;
+                        if (effectiveDistance <= proximity) {
+                            glowIntensity = 1;
+                        } else if (effectiveDistance <= fadeDistance) {
+                            glowIntensity = (fadeDistance - effectiveDistance) / (fadeDistance - proximity);
+                        }
+
+                        updateCardGlowProperties(cardElement, e.clientX, e.clientY, glowIntensity, spotlightRadius);
+                    });
+
+                    gsap.to(spotlightRef.current, {
+                        left: e.clientX,
+                        top: e.clientY,
+                        duration: 0.1,
+                        ease: 'power2.out'
+                    });
+
+                    const targetOpacity =
+                        minDistance <= proximity
+                            ? 0.8
+                            : minDistance <= fadeDistance
+                                ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
+                                : 0;
+
+                    gsap.to(spotlightRef.current, {
+                        opacity: targetOpacity,
+                        duration: targetOpacity > 0 ? 0.2 : 0.5,
+                        ease: 'power2.out'
+                    });
+                };
+
+                const handleMouseLeave = () => {
+                    isInsideSection.current = false;
+                    gridRef.current?.querySelectorAll('.magic-bento-card').forEach(card => {
+                        card.style.setProperty('--glow-intensity', '0');
+                    });
+                    if (spotlightRef.current) {
+                        gsap.to(spotlightRef.current, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    }
+                };
+
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseleave', handleMouseLeave);
+
+                return () => {
+                    document.removeEventListener('mousemove', handleMouseMove);
+                    document.removeEventListener('mouseleave', handleMouseLeave);
+                    spotlightRef.current?.parentNode?.removeChild(spotlightRef.current);
+                };
+            }, [gridRef, disableAnimations, enabled, spotlightRadius, glowColor]);
+
+            return null;
+        };
+
+        const BentoCardGrid = ({ children, gridRef }) => (
+            <div className="card-grid bento-section" ref={gridRef}>
+                {children}
+            </div>
+        );
+
+        const useMobileDetection = () => {
+            const [isMobile, setIsMobile] = useState(false);
+
+            useEffect(() => {
+                const checkMobile = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
+
+                checkMobile();
+                window.addEventListener('resize', checkMobile);
+
+                return () => window.removeEventListener('resize', checkMobile);
+            }, []);
+
+            return isMobile;
+        };
+
+        const MagicBento = ({
+            projects = [],
+            onProjectClick,
+            textAutoHide = true,
+            enableStars = true,
+            enableSpotlight = true,
+            enableBorderGlow = true,
+            disableAnimations = false,
+            spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
+            particleCount = DEFAULT_PARTICLE_COUNT,
+            enableTilt = false,
+            glowColor = DEFAULT_GLOW_COLOR,
+            clickEffect = true,
+            enableMagnetism = true
+        }) => {
+            const gridRef = useRef(null);
+            const isMobile = useMobileDetection();
+            const shouldDisableAnimations = disableAnimations || isMobile;
+
+            return (
+                <React.Fragment>
+                    {enableSpotlight && (
+                        <GlobalSpotlight
+                            gridRef={gridRef}
+                            disableAnimations={shouldDisableAnimations}
+                            enabled={enableSpotlight}
+                            spotlightRadius={spotlightRadius}
+                            glowColor={glowColor}
+                        />
+                    )}
+
+                    <BentoCardGrid gridRef={gridRef}>
+                        {projects.map((project, index) => {
+                            const baseClassName = `magic-bento-card ${textAutoHide ? 'magic-bento-card--text-autohide' : ''} ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''}`;
+
+                            // Determine style based on index like standard Bento
+                            // const style = {
+                            //     backgroundColor: 'var(--background-dark)', // Or dynamic colour
+                            //     '--glow-color': glowColor
+                            // };
+
+                            return (
+                                <ParticleCard
+                                    key={project.id}
+                                    className={baseClassName}
+                                    style={{
+                                        backgroundColor: '#060010',
+                                        '--glow-color': glowColor
+                                    }}
+                                    disableAnimations={shouldDisableAnimations}
+                                    particleCount={particleCount}
+                                    glowColor={glowColor}
+                                    enableTilt={enableTilt}
+                                    clickEffect={clickEffect}
+                                    enableMagnetism={enableMagnetism}
+                                    onClick={() => onProjectClick(project.id)}
+                                >
+                                    <div className="magic-bento-card__header">
+                                        <div className="magic-bento-card__label">{getCategoryLabel(project.category)}</div>
+                                    </div>
+                                    <div className="magic-bento-card__content">
+                                        {/* Card Image handled as background or separate? Standard Bento usually text focus, let's keep text focus as per example but maybe show image on hover? Or just text? The example only had text. Let's stick to the example components but populate with project data. */}
+                                        <h2 className="magic-bento-card__title">{project.title}</h2>
+                                    </div>
+
+                                    {/* Optional: Background Image with low opacity? */}
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        backgroundImage: `url(${project.image})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        opacity: 0.2,
+                                        zIndex: 0,
+                                        filter: 'grayscale(100%)'
+                                    }}></div>
+                                </ParticleCard>
+                            );
+                        })}
+                    </BentoCardGrid>
+                </React.Fragment>
+            );
+        };
+
         const ProjectsApp = () => {
             const [filter, setFilter] = useState('all');
             const [selectedId, setSelectedId] = useState(null);
@@ -1841,22 +2414,22 @@
                         ))}
                     </div>
 
-                    {/* Grid */}
-                    <motion.div
-                        className="project-grid"
-                        layout
-                        style={{ minHeight: '50vh' }}
-                    >
-                        <AnimatePresence>
-                            {filteredProjects.map(project => (
-                                <ProjectCard
-                                    key={project.id}
-                                    project={project}
-                                    onClick={() => setSelectedId(project.id)}
-                                />
-                            ))}
-                        </AnimatePresence>
-                    </motion.div>
+                    {/* MagicBento Grid */}
+                    <MagicBento
+                        projects={filteredProjects}
+                        onProjectClick={setSelectedId}
+                        textAutoHide={true}
+                        enableStars={true}
+                        enableSpotlight={true}
+                        enableBorderGlow={true}
+                        enableTilt={false}
+                        enableMagnetism={false}
+                        clickEffect={true}
+                        spotlightRadius={400}
+                        particleCount={12}
+                        glowColor="var(--accent-color-rgb)"
+                        disableAnimations={false}
+                    />
 
                     {/* Detail Modal */}
                     <AnimatePresence>

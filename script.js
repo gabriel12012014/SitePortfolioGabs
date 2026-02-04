@@ -43,82 +43,139 @@ function initSlideshow() {
 }
 
 // Global function for direct onclick access
-window.copyEmail = async function (event) {
+// --- Helpers for Clipboard Operations ---
+
+// 1. Helper: Fallback Copy
+function fallbackCopyTextToClipboard(text, onSuccess) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        var successful = document.execCommand('copy');
+        if (successful && onSuccess) onSuccess();
+        return successful;
+    } catch (err) {
+        console.error('Fallback copy failed', err);
+        return false;
+    } finally {
+        document.body.removeChild(textArea);
+    }
+}
+
+// 2. Helper: Show Toast
+function showToast(x, y, message) {
+    const toast = document.getElementById('toast-notification');
+    const toastText = document.getElementById('toast-message');
+
+    if (toast) {
+        // Update message if element exists and message provided
+        if (message && toastText) {
+            toastText.textContent = message;
+        }
+
+        // Position toast if coordinates provided
+        if (x !== undefined && y !== undefined) {
+            toast.style.left = x + 'px';
+            toast.style.top = y + 'px';
+        }
+
+        toast.classList.add('toast-visible');
+        toast.classList.remove('toast-hidden');
+        setTimeout(() => {
+            toast.classList.remove('toast-visible');
+            toast.classList.add('toast-hidden');
+        }, 3000);
+    } else {
+        console.error("Toast element not found");
+    }
+}
+
+// 3. Main Copy Function
+async function handleCopy(text, message, event) {
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
 
-    // Hardcoded email for reliability
-    const email = "gabriel12012014@outlook.com";
-    console.log("DEBUG: Global copyEmail called for", email);
-
-    // 1. Helper: Fallback Copy
-    function fallbackCopyTextToClipboard(text) {
-        var textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.top = "0";
-        textArea.style.left = "0";
-        textArea.style.position = "fixed";
-        textArea.style.opacity = "0";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        try {
-            var successful = document.execCommand('copy');
-            var msg = successful ? 'successful' : 'unsuccessful';
-            console.log('Fallback copy result:', msg);
-            return successful;
-        } catch (err) {
-            console.error('Fallback copy failed', err);
-            return false;
-        } finally {
-            document.body.removeChild(textArea);
-        }
+    let clickX, clickY;
+    if (event) {
+        clickX = event.clientX;
+        clickY = event.clientY;
     }
 
-    // 2. Helper: Show Toast
-    function showToast() {
-        const toast = document.getElementById('toast-notification');
-        if (toast) {
-            toast.classList.add('toast-visible');
-            toast.classList.remove('toast-hidden');
-            setTimeout(() => {
-                toast.classList.remove('toast-visible');
-                toast.classList.add('toast-hidden');
-            }, 3000);
-        } else {
-            console.error("Toast element not found");
-        }
-    }
+    const triggerSuccess = () => showToast(clickX, clickY, message);
 
-    // 3. Main Copy Logic
     if (!navigator.clipboard) {
         console.warn("Clipboard API missing, using fallback");
-        if (fallbackCopyTextToClipboard(email)) {
-            showToast();
-        } else {
-            prompt("Copie manualmente:", email);
+        if (!fallbackCopyTextToClipboard(text, triggerSuccess)) {
+            prompt("Copie manualmente:", text);
         }
-        return false;
+        return;
     }
 
     try {
-        await navigator.clipboard.writeText(email);
+        await navigator.clipboard.writeText(text);
         console.log("Clipboard API success");
-        showToast();
+        triggerSuccess();
     } catch (err) {
         console.error("Clipboard API failed", err);
-        if (fallbackCopyTextToClipboard(email)) {
-            showToast();
-        } else {
-            prompt("Copie manualmente:", email);
+        if (!fallbackCopyTextToClipboard(text, triggerSuccess)) {
+            prompt("Copie manualmente:", text);
         }
     }
+}
 
-    return false;
+// --- Exposed Functions ---
+
+window.copyEmail = function (event) {
+    handleCopy("gabriel12012014@outlook.com", "Email copiado!", event);
 };
+
+window.copyWhatsApp = function (event) {
+    // Check for mobile user agent or small screen
+    // This allows the link to function normally (open app) on mobile devices
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024;
+
+    if (isMobile) {
+        // Allow default link behavior (navigation)
+        return;
+    }
+
+    // On desktop, intercept and copy number
+    handleCopy("11991878100", "Número copiado!", event);
+};
+
+function setupAccordion() {
+    const headers = document.querySelectorAll('.accordion-header');
+
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const currentItem = header.parentElement;
+
+            // If already open, ignore (keep one open at all times)
+            if (currentItem.classList.contains('active')) return;
+
+            // Close all others
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('active');
+                const icon = item.querySelector('.accordion-icon');
+                if (icon) icon.textContent = '+';
+            });
+
+            // Open clicked
+            currentItem.classList.add('active');
+            const icon = currentItem.querySelector('.accordion-icon');
+            if (icon) icon.textContent = '−'; // Using minus sign
+        });
+    });
+}
 
 function setupNavToggle() {
     const contactSection = document.getElementById('contact');
@@ -196,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSmoothScroll();
     createCurvedText();
     setupCrosshair();
+    setupAccordion();
     // setupEmailCopy(); // Removed
 
 
