@@ -209,36 +209,18 @@ function setupNavToggle() {
     // Track contact section visibility state
     let isContactVisible = false;
 
-    const observerOptions = {
-        root: null,
-        threshold: 0.5 // trigger when 50% of the section is visible
-    };
-
+    // IntersectionObserver is sufficient — no need for a scroll listener
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             isContactVisible = entry.isIntersecting;
             toggleFixedElements(isContactVisible);
         });
-    }, observerOptions);
+    }, {
+        root: null,
+        threshold: [0, 0.5] // fire on enter AND cross 50%
+    });
 
     observer.observe(contactSection);
-
-    // Also listen to scroll events for more reliable detection
-    window.addEventListener('scroll', () => {
-        const rect = contactSection.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        const sectionHeight = rect.height;
-        const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-        const visiblePercent = visibleHeight / sectionHeight;
-
-        // Hide when 50% of the contact section is visible
-        const shouldHide = visiblePercent >= 0.5;
-
-        if (shouldHide !== isContactVisible) {
-            isContactVisible = shouldHide;
-            toggleFixedElements(shouldHide);
-        }
-    }, { passive: true });
 
     // Expose global function for React components to call
     window.updateFixedElementsVisibility = () => {

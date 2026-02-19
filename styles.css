@@ -1,5 +1,4 @@
 :root {
-    scroll-behavior: smooth;
     /* Definições padrão (Theme 1 - Risograph) */
     --bg-color: #F4E7D4;
     --bg-color-rgb: 244, 231, 212;
@@ -13,6 +12,8 @@
     /* Typography */
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
+    --font-display: 'Barriecito', system-ui;
+    /* Titles / section headings */
 
     /* Spacing */
     --container-padding: 2rem;
@@ -72,7 +73,27 @@ body {
     min-height: 100vh;
 }
 
+/* Bloqueia scroll enquanto o preloader está ativo */
+body.preloading {
+    overflow: hidden;
+}
+
 /* Utilities */
+/* Barriecito display font — used on section titles */
+.barriecito-regular {
+    font-family: "Barriecito", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Apply Barriecito to key section titles */
+.contact-title,
+.massive-footer-text,
+.curved-loop-jacket text,
+.curved-loop-jacket textPath {
+    font-family: var(--font-display) !important;
+}
+
 .fade-in-up {
     opacity: 0;
     transform: translateY(20px);
@@ -753,7 +774,8 @@ body {
 
 /* Global Grain Effect */
 .global-grain {
-    position: absolute;
+    position: fixed;
+    /* fixed avoids height recalc on scroll */
     top: 0;
     left: 0;
     width: 100%;
@@ -763,7 +785,11 @@ body {
     opacity: var(--grain-opacity);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
     mix-blend-mode: var(--grain-blend);
-
+    will-change: transform;
+    /* promote to GPU compositor layer */
+    animation: grain 8s steps(10) infinite;
+    /* activate the grain animation */
+    background-size: 200px 200px;
 }
 
 @keyframes grain {
@@ -870,12 +896,12 @@ body {
     text-decoration: none;
     color: var(--bg-color);
     /* Contrast against accent bg */
-    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     letter-spacing: 0.05em;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    will-change: transform;
+    /* will-change removed: applied only on hover via JS to avoid excess GPU layers */
 }
 
 .contact-icon {
@@ -1142,10 +1168,17 @@ body {
 
 /* About Me Section */
 .about-section {
-    padding: 6rem 0;
+    padding: 0;
     width: 100%;
     position: relative;
     overflow: hidden;
+}
+
+/* Constrain only the about content, not the full-width title */
+.about-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
 }
 
 .about-grid {
@@ -1176,8 +1209,8 @@ body {
 }
 
 .accordion-item {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid var(--text-primary);
+    background: transparent;
+    border: 2px solid var(--text-primary);
     border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
@@ -1214,7 +1247,7 @@ body {
     /* Bottom to top for vertical text */
     align-items: center;
     justify-content: center;
-    padding: 1rem 0;
+    padding: 0;
     cursor: pointer;
     outline: none;
     white-space: nowrap;
@@ -1230,6 +1263,7 @@ body {
     /* Vertical Text */
     transform: rotate(180deg);
     /* Fix orientation */
+    color: var(--text-primary);
 }
 
 .accordion-header:hover,
@@ -1490,7 +1524,7 @@ body {
     background: var(--background-dark);
     font-weight: 300;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
 
     --glow-x: 50%;

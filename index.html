@@ -15,10 +15,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barriecito&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
     <link rel="preload" as="image" href="rodasambasp-01.webp">
+    <link rel="preload" as="image" href="project_1.webp">
+    <link rel="preload" as="image" href="project_2.webp">
+    <link rel="preload" as="image" href="project_3.webp">
 
     <!-- Theme Persistence Prep -->
     <script>
@@ -51,6 +55,16 @@
 
     </header>
 
+
+    <section id="work" class="work-section">
+        <!-- CurvedLoop Title - Full Width -->
+        <div id="curved-title-root"></div>
+
+        <div class="container">
+
+            <!-- React App for Projects (Filters + Grid + Details Modal) overrides static HTML -->
+            <div id="projects-root" style="min-height: 50vh;"></div>
+    </section>
 
     <section id="about" class="about-section">
         <!-- CurvedLoop Title - Full Width -->
@@ -98,7 +112,7 @@
                     <!-- Accordion Item 2: Formação -->
                     <div class="accordion-item">
                         <button class="accordion-header">
-                            <span class="accordion-title">Formação & Cursos</span>
+                            <span class="accordion-title">Formação &amp; Cursos</span>
                             <span class="accordion-icon">+</span>
                         </button>
                         <div class="accordion-content">
@@ -138,7 +152,7 @@
                                         <li>
                                             <span class="year">2023 - Atual</span>
                                             <div class="details">
-                                                <strong>Designer & Dev Freelancer</strong>
+                                                <strong>Designer &amp; Dev Freelancer</strong>
                                                 <span>Autônomo</span>
                                             </div>
                                         </li>
@@ -160,19 +174,9 @@
         </div>
     </section>
 
-    <section id="work" class="work-section">
-        <!-- CurvedLoop Title - Full Width -->
-        <div id="curved-title-root"></div>
-
-        <div class="container">
-
-            <!-- React App for Projects (Filters + Grid + Details Modal) overrides static HTML -->
-            <div id="projects-root" style="min-height: 50vh;"></div>
-    </section>
-
     <section id="contact" class="contact-section">
         <div class="contact-container">
-            <h2 class="contact-title">Manda um zap!</h2>
+            <h2 class="contact-title barriecito-regular">Manda um zap!</h2>
             <p class="contact-subtitle">Clique em uma das redes abaixo para visitar minha rede social!</p>
             <div class="contact-links-row">
                 <a href="javascript:void(0)" onclick="copyEmail(event)" id="email-copy-link" class="contact-link"
@@ -240,6 +244,9 @@
     </div>
 
 
+
+    <!-- Modal Root (used by React portals for project details) -->
+    <div id="modal-root"></div>
 
     <!-- Crosshair Effect Root -->
     <div id="crosshair-root"></div>
@@ -869,7 +876,13 @@
                     uniforms.resolution.value.set(width, height, 1, 1);
                 };
 
-                window.addEventListener('resize', handleResize);
+                // Debounced resize to avoid layout thrashing on every pixel
+                let resizeTimer;
+                const debouncedResize = () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(handleResize, 150);
+                };
+                window.addEventListener('resize', debouncedResize);
 
                 const mouseState = { x: 0, y: 0, prevX: 0, prevY: 0, vX: 0, vY: 0 };
 
@@ -885,8 +898,23 @@
                 container.addEventListener('mousemove', handleMouseMove);
                 handleResize();
 
-                let animationId;
+                let animationId = null;
+                let isVisible = true;
+
+                // Pause WebGL loop when header is off-screen (saves GPU when scrolled away)
+                const visibilityObserver = new IntersectionObserver(([entry]) => {
+                    isVisible = entry.isIntersecting;
+                    if (isVisible && !animationId) {
+                        animate();
+                    }
+                }, { threshold: 0 });
+                visibilityObserver.observe(container);
+
                 const animate = () => {
+                    if (!isVisible) {
+                        animationId = null;
+                        return;
+                    }
                     animationId = requestAnimationFrame(animate);
                     uniforms.time.value += 0.05;
 
@@ -899,13 +927,17 @@
                     const gridMouseX = size * mouseState.x;
                     const gridMouseY = size * mouseState.y;
                     const maxDist = size * mouse;
+                    const maxDistSq = maxDist * maxDist;
 
                     for (let i = 0; i < size; i++) {
                         for (let j = 0; j < size; j++) {
-                            const distSq = Math.pow(gridMouseX - i, 2) + Math.pow(gridMouseY - j, 2);
-                            if (distSq < maxDist * maxDist) {
+                            // Use direct multiplication instead of Math.pow (much faster in hot loops)
+                            const dx = gridMouseX - i;
+                            const dy = gridMouseY - j;
+                            const distSq = dx * dx + dy * dy;
+                            if (distSq < maxDistSq) {
                                 const index = 4 * (i + size * j);
-                                const power = Math.min(maxDist / Math.sqrt(distSq), 10);
+                                const power = Math.min(maxDist / Math.sqrt(distSq || 0.0001), 10);
                                 data[index] += strength * 100 * mouseState.vX * power;
                                 data[index + 1] -= strength * 100 * mouseState.vY * power;
                             }
@@ -920,13 +952,16 @@
 
                 return () => {
                     cancelAnimationFrame(animationId);
-                    window.removeEventListener('resize', handleResize);
+                    clearTimeout(resizeTimer);
+                    visibilityObserver.disconnect();
+                    window.removeEventListener('resize', debouncedResize);
                     container.removeEventListener('mousemove', handleMouseMove);
                     renderer.dispose();
                     geometry.dispose();
                     material.dispose();
                     dataTexture.dispose();
                 };
+
             }, [grid, mouse, strength, relaxation, imageSrc]);
 
             return (
@@ -2759,7 +2794,12 @@
                     uniforms.resolution.value.set(rect.width * renderer.getPixelRatio(), rect.height * renderer.getPixelRatio());
                 };
 
-                window.addEventListener('resize', handleResize);
+                let ditherResizeTimer;
+                const debouncedDitherResize = () => {
+                    clearTimeout(ditherResizeTimer);
+                    ditherResizeTimer = setTimeout(handleResize, 150);
+                };
+                window.addEventListener('resize', debouncedDitherResize);
                 handleResize();
 
                 const handleMouseMove = e => {
@@ -2797,7 +2837,8 @@
 
                 return () => {
                     cancelAnimationFrame(animationId);
-                    window.removeEventListener('resize', handleResize);
+                    clearTimeout(ditherResizeTimer);
+                    window.removeEventListener('resize', debouncedDitherResize);
                     window.removeEventListener('mousemove', handleMouseMove);
                     window.removeEventListener('theme-change', handleThemeChange);
                     window.removeEventListener('modal-open', handlePause);
