@@ -1,4 +1,3 @@
-import './style.css';
 import { projects, filters } from './data.js';
 
 let currentFilter = 'all';
