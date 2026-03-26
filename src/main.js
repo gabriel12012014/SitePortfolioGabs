@@ -161,16 +161,39 @@ function init() {
     copyEmailBtn.addEventListener('click', (e) => {
       e.preventDefault();
       const email = copyEmailBtn.getAttribute('data-email');
-      navigator.clipboard.writeText(email).then(() => {
-        copyEmailBtn.textContent = 'E-mail copiado!';
-        setTimeout(() => {
-          copyEmailBtn.innerHTML = originalHTML;
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy text: ', err);
-      });
+      
+      // Fallback seguro em caso de HTTP em vez de HTTPS
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(email).then(() => {
+          copyEmailBtn.textContent = 'E-mail copiado!';
+          setTimeout(() => {
+            copyEmailBtn.innerHTML = originalHTML;
+          }, 2000);
+        }).catch(err => console.error('Failed to copy', err));
+      } else {
+        // Fallback manual
+        const textArea = document.createElement("textarea");
+        textArea.value = email;
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          copyEmailBtn.textContent = 'E-mail copiado! (Fallback)';
+          setTimeout(() => { copyEmailBtn.innerHTML = originalHTML; }, 2000);
+        } catch (err) {
+          console.error('Fallback falhou', err);
+        }
+        document.body.removeChild(textArea);
+      }
     });
   }
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// Garante que o init rode mesmo se o script module rodar depois que o DOM já foi carregado
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
