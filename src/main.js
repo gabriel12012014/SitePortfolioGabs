@@ -43,10 +43,10 @@ function renderProjects() {
     card.innerHTML = `
       <div class="project-image-container">
         <img src="${project.imageUrl}" alt="${project.title}" loading="lazy" />
-      </div>
-      <div class="project-info">
-        <h3 class="project-title">${project.title}</h3>
-        <p class="project-category">${project.tags.join(', ')}</p>
+        <div class="project-info overlay">
+          <h3 class="project-title">${project.title}</h3>
+          <p class="project-category">${project.tags.join(', ')}</p>
+        </div>
       </div>
     `;
     
