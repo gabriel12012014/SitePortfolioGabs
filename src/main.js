@@ -40,9 +40,29 @@ function renderProjects() {
   filteredProjects.forEach(project => {
     const card = document.createElement('div');
     card.className = 'project-card';
+    
+    const videoPreview = project.mediaImages.find(url => 
+      url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg')
+    );
+
+    let mediaHTML = '';
+    if (videoPreview) {
+      mediaHTML = `<video src="${videoPreview}" autoplay loop muted playsinline preload="metadata" class="project-video-preview"></video>`;
+    } else if (project.mediaImages.length > 1) {
+      // Create a slideshow with up to 3 images
+      const slideshowImages = project.mediaImages
+        .filter(url => !(url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg')))
+        .slice(0, 3);
+      
+      mediaHTML = slideshowImages.map(url => 
+        `<img src="${url}" class="slideshow-img" alt="${project.title}" loading="lazy" />`
+      ).join('');
+    }
+
     card.innerHTML = `
       <div class="project-image-container">
         <img src="${project.imageUrl}" alt="${project.title}" loading="lazy" />
+        ${mediaHTML}
         <div class="project-info overlay">
           <h3 class="project-title">${project.title}</h3>
           <p class="project-category">${project.tags.join(', ')}</p>
@@ -85,6 +105,7 @@ function openModal(project) {
       videoDOM.autoplay = true;
       videoDOM.loop = true;
       videoDOM.muted = true;
+      videoDOM.playsInline = true;
       videoDOM.classList.add('horizontal-img');
       modalMedia.appendChild(videoDOM);
     } else {
