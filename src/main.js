@@ -101,7 +101,7 @@ function openModal(project) {
     if (mediaUrl.endsWith('.mp4') || mediaUrl.endsWith('.webm') || mediaUrl.endsWith('.ogg')) {
       const videoDOM = document.createElement('video');
       videoDOM.src = mediaUrl;
-      videoDOM.controls = true;
+      videoDOM.controls = false;
       videoDOM.autoplay = true;
       videoDOM.loop = true;
       videoDOM.muted = true;
