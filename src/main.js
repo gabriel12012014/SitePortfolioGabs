@@ -5,6 +5,19 @@ let currentFilter = 'all';
 const filtersContainer = document.getElementById('filters-container');
 const projectsGrid = document.getElementById('projects-grid');
 
+// Video Intersection Observer
+const videoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const video = entry.target;
+    if (entry.isIntersecting) {
+      video.play().catch(() => {}); // Autoplay might be blocked until interaction
+    } else {
+      video.pause();
+    }
+  });
+}, { threshold: 0.2 });
+
+
 // Modal Elements
 const modal = document.getElementById('project-modal');
 const modalCloseBtn = document.getElementById('close-modal');
@@ -47,7 +60,7 @@ function renderProjects() {
 
     let mediaHTML = '';
     if (videoPreview) {
-      mediaHTML = `<video src="${videoPreview}" autoplay loop muted playsinline preload="metadata" class="project-video-preview"></video>`;
+      mediaHTML = `<video src="${videoPreview}" loop muted playsinline preload="metadata" class="project-video-preview"></video>`;
     } else if (project.mediaImages.length > 1) {
       // Create a slideshow with up to 3 images
       const slideshowImages = project.mediaImages
@@ -75,6 +88,12 @@ function renderProjects() {
 
     projectsGrid.appendChild(card);
     
+    // Observe video if exists
+    const videoElement = card.querySelector('video');
+    if (videoElement) {
+      videoObserver.observe(videoElement);
+    }
+    
     setTimeout(() => {
       card.style.opacity = '1';
     }, 50);
@@ -101,10 +120,11 @@ function openModal(project) {
     if (mediaUrl.endsWith('.mp4') || mediaUrl.endsWith('.webm') || mediaUrl.endsWith('.ogg')) {
       const videoDOM = document.createElement('video');
       videoDOM.src = mediaUrl;
-      videoDOM.controls = false;
-      videoDOM.autoplay = true;
+      videoDOM.controls = true; // Permite controle no modal
+      videoDOM.autoplay = false;
       videoDOM.loop = true;
       videoDOM.muted = true;
+      videoDOM.preload = "metadata";
       videoDOM.playsInline = true;
       videoDOM.classList.add('horizontal-img');
       modalMedia.appendChild(videoDOM);
@@ -143,13 +163,36 @@ function openModal(project) {
 
   // Show Modal
   modal.classList.remove('hidden');
-  document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  document.body.style.overflow = 'hidden'; 
+  
+  // Adiciona estado ao histórico para que o botão "voltar" funcione
+  if (history.state?.modalOpen !== true) {
+    history.pushState({ modalOpen: true }, '', '#projeto');
+  }
 }
 
-modalCloseBtn.onclick = () => {
+function closeModal() {
   modal.classList.add('hidden');
-  document.body.style.overflow = ''; // Restore scrolling
-};
+  document.body.style.overflow = ''; // Restaura o scroll do fundo
+  
+  // Se o fechamento foi manual (clique no X), limpa o histórico se necessário
+  if (history.state?.modalOpen === true) {
+    history.back();
+  }
+}
+
+modalCloseBtn.onclick = closeModal;
+
+// Escuta o evento de "voltar" do navegador/celular
+window.addEventListener('popstate', (event) => {
+  if (!event.state || !event.state.modalOpen) {
+    // Se não há estado de modal aberto, garante que ele feche
+    if (!modal.classList.contains('hidden')) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  }
+});
 
 function init() {
   renderFilters();

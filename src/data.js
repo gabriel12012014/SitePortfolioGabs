@@ -182,7 +182,7 @@ export const projects = [
       './public/images/nobreza_1.webp',
       './public/images/nobreza_2.webp',
       './public/images/nobreza_3.webp',
-      './public/images/nobreza_4.jpg'
+      './public/images/nobreza_4.webp'
     ],
     projectLink: 'https://gshow.globo.com/novelas/a-nobreza-do-amor/tudo-sobre-e-onde-assistir/'
   }
