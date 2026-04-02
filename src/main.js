@@ -230,9 +230,11 @@ const modalLink = document.getElementById('modal-link');
 function renderFilters() {
   filtersContainer.innerHTML = '';
   filters.forEach(filter => {
+    const isActive = currentFilter === filter.value;
     const btn = document.createElement('button');
-    btn.className = `filter-btn ${currentFilter === filter.value ? 'active' : ''}`;
+    btn.className = `filter-btn ${isActive ? 'active' : ''}`;
     btn.textContent = filter.label;
+    btn.setAttribute('aria-pressed', isActive.toString());
     btn.onclick = () => {
       currentFilter = filter.value;
       renderFilters();

@@ -559,25 +559,25 @@ main {
       <div class="footer-content">
         <p class="location-text">São Paulo - SP</p>
         <div class="footer-links">
-          <a href="#" id="copy-email-btn" data-email="gabriel12012014@outlook.com">
+          <a href="#" id="copy-email-btn" data-email="gabriel12012014@outlook.com" aria-label="Copiar E-mail">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
               <polyline points="22,6 12,13 2,6"></polyline>
             </svg>gabriel12012014@outlook.com
           </a>
-          <a href="https://wa.me/5511991878100" target="_blank" rel="noopener noreferrer">
+          <a href="https://wa.me/5511991878100" target="_blank" rel="noopener noreferrer" aria-label="Entrar em contato via WhatsApp">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>(11) 99187-8100
           </a>
-          <a href="https://www.instagram.com/gabaszw/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.instagram.com/gabaszw/" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil no Instagram">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
             </svg>@gabaszw
           </a>
-          <a href="https://putsgabs.itch.io/" target="_blank" rel="noopener noreferrer">
+          <a href="https://putsgabs.itch.io/" target="_blank" rel="noopener noreferrer" aria-label="Visitar página no Itch.io">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;">
               <rect x="2" y="6" width="20" height="12" rx="2"></rect>
               <line x1="6" y1="12" x2="10" y2="12"></line>
@@ -586,7 +586,7 @@ main {
               <line x1="18" y1="11" x2="18.01" y2="11"></line>
             </svg>Itch.io
           </a>
-          <a href="https://www.linkedin.com/in/gabsputs/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/in/gabsputs/" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil no LinkedIn">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;">
               <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
               <rect x="2" y="9" width="4" height="12"></rect>
@@ -600,7 +600,7 @@ main {
     <!-- Project Fullscreen Modal -->
     <div id="project-modal" class="modal hidden">
       <div class="modal-content">
-        <button id="close-modal" class="close-btn">&times;</button>
+        <button id="close-modal" class="close-btn" aria-label="Fechar Modal de Projeto">&times;</button>
         <div class="modal-header">
           <h2 id="modal-title" class="modal-title"></h2>
           <span id="modal-date" class="modal-date"></span>
@@ -619,7 +619,7 @@ main {
 
     <!-- Image Lightbox -->
     <div id="image-lightbox" class="lightbox">
-      <span class="lightbox-close">&times;</span>
+      <button class="lightbox-close" aria-label="Fechar visualizador de imagem" style="background:none;border:none;color:white;cursor:pointer;">&times;</button>
       <img id="lightbox-img" class="lightbox-content" src="" alt="Imagem em Tela Cheia">
     </div>
 
