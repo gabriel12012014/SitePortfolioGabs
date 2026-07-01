@@ -191,16 +191,16 @@ export const projects = [
     title: 'Fuja do ROBB MONSTRO',
     category: 'Game Design',
     date: '2023',
-    imageUrl: './public/images/robb_1.png',
+    imageUrl: './public/images/robb_1.webp',
     tags: ['Game Design', 'Design', 'Pixel art'],
     description: 'Embora este projeto não tenha ido ao ar, ele foi criado como uma proposta de jogo para um cliente. Fui responsável por toda a programação no Construct 3 e pela direção de arte/pixel art criadas no Aseprite.',
     credits: '<strong>Coordenação (design e desenvolvimento):</strong> Guilherme Gomes',
     mediaImages: [
-      './public/images/robb_1.png',
-      './public/images/robb_2.png',
-      './public/images/robb_3.png',
-      './public/images/robb_4.png',
-      './public/images/robb_5.png'
+      './public/images/robb_1.webp',
+      './public/images/robb_2.webp',
+      './public/images/robb_3.webp',
+      './public/images/robb_4.webp',
+      './public/images/robb_5.webp'
     ],
     projectLink: 'https://s3.glbimg.com/v1/AUTH_8b29beb0cbe247a296f902be2fe084b6/2023/jogos/bbb_fuja_do_robbbmau/index.html'
   },
@@ -209,16 +209,16 @@ export const projects = [
     title: 'gshow - Fuzuê',
     category: 'Game Design',
     date: 'Novembro 2023',
-    imageUrl: './public/images/fuzue_1.jpg',
+    imageUrl: './public/images/fuzue_1.webp',
     tags: ['Game Design', 'Design', 'Ilustração', 'Pixel art'],
     description: "Jogo editorial desenvolvido para o portal gshow, criado para complementar uma matéria sobre a novela 'Fuzuê'. A programação e a lógica do projeto foram construídas no Construct 3, enquanto toda a criação visual em pixel art foi feita no Aseprite.",
     credits: '<strong>Coordenação (design e desenvolvimento):</strong> Guilherme Gomes',
     mediaImages: [
-      './public/images/fuzue_1.jpg',
-      './public/images/fuzue_2.jpg',
-      './public/images/fuzue_3.jpg',
-      './public/images/fuzue_4.jpg',
-      './public/images/fuzue_5.png'
+      './public/images/fuzue_1.webp',
+      './public/images/fuzue_2.webp',
+      './public/images/fuzue_3.webp',
+      './public/images/fuzue_4.webp',
+      './public/images/fuzue_5.webp'
     ],
     projectLink: 'https://s3.glbimg.com/v1/AUTH_8b29beb0cbe247a296f902be2fe084b6/2023/gshow/gshow_fuzue_site/index.html'
   },
@@ -227,16 +227,16 @@ export const projects = [
     title: 'Obsoletos',
     category: 'Game Design',
     date: 'Dezembro 2024',
-    imageUrl: './public/images/obsoletos_1.png',
+    imageUrl: './public/images/obsoletos_1.webp',
     tags: ['Design', 'Pixel art'],
     description: 'Projeto Integrador (PI) desenvolvido durante o 3º semestre do curso de Jogos Digitais no Senac Santo Amaro. Neste trabalho em equipe, atuei diretamente na direção de arte, sendo responsável pela criação de todas as pixel arts e pela identidade visual completa do jogo.',
     credits: '<strong>Programador:</strong> Bruno Vinicius <br/> <strong>Roteirista:</strong> Helder Lima',
     mediaImages: [
-      './public/images/obsoletos_1.png',
-      './public/images/obsoletos_2.png',
-      './public/images/obsoletos_3.png',
-      './public/images/obsoletos_4.png',
-      './public/images/obsoletos_5.png'
+      './public/images/obsoletos_1.webp',
+      './public/images/obsoletos_2.webp',
+      './public/images/obsoletos_3.webp',
+      './public/images/obsoletos_4.webp',
+      './public/images/obsoletos_5.webp'
     ],
     projectLink: 'https://putsgabs.itch.io/obsoletos'
   },
@@ -245,14 +245,14 @@ export const projects = [
     title: 'GUIA',
     category: 'Game Design',
     date: 'Julho 2024',
-    imageUrl: './public/images/guia_1.png',
+    imageUrl: './public/images/guia_1.webp',
     tags: ['Design', 'Pixel art'],
     description: 'Jogo desenvolvido em equipe durante a CTRL ALT FRAME Jam, com o prazo de apenas uma semana. Fui o responsável pela concepção visual completa, assumindo toda a direção de arte e a criação das pixel arts.',
     credits: '<strong>Level Designer e Game Designer:</strong> Luiz Henrique <br/> <strong>Programador:</strong> Danillu <br/> <strong>Roteirista:</strong> Cassiel',
     mediaImages: [
-      './public/images/guia_1.png',
-      './public/images/guia_2.png',
-      './public/images/guia_3.png'
+      './public/images/guia_1.webp',
+      './public/images/guia_2.webp',
+      './public/images/guia_3.webp'
     ],
     projectLink: 'https://putsgabs.itch.io/guia'
   }
