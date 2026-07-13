@@ -6,15 +6,22 @@
     box-sizing: border-box;
     font-family: 'Outfit', sans-serif;
     user-select: none;
-    -webkit-user-select: none; /* Prevent text selection */
-    -webkit-touch-callout: none; /* Prevent callout to copy image, etc when tap to hold */
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+:root {
+    --bg-color: #111827;
+    --panel-bg: #1f2937;
+    --primary: #3b82f6;
+    --accent: #ef4444;
 }
 
 body, html {
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Prevent scrolling */
-    background: #0f172a;
+    overflow: hidden;
+    background: var(--bg-color);
     color: white;
 }
 
@@ -37,16 +44,15 @@ body, html {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
 }
 
 .content-box {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--panel-bg);
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 12px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 400px;
 }
 
 .content-box h1 {
@@ -56,45 +62,44 @@ body, html {
 }
 
 .content-box p {
-    color: #94a3b8;
+    color: #9ca3af;
     margin-bottom: 25px;
     font-size: 1.1rem;
     line-height: 1.4;
 }
 
 #start-btn {
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    background: var(--primary);
     color: white;
     border: none;
     padding: 15px 30px;
     font-size: 1.2rem;
     font-weight: 700;
-    border-radius: 50px;
-    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
+    border-radius: 8px;
 }
 
 #start-btn:active {
     transform: scale(0.95);
+    background: #2563eb;
 }
 
 .error-msg {
-    color: #ef4444 !important;
+    color: var(--accent) !important;
     margin-top: 15px;
     font-size: 0.9rem !important;
 }
 
 /* Control Screen */
 #control-screen {
-    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+    background: var(--bg-color);
 }
 
 .header {
     text-align: center;
     padding: 20px;
-    color: #94a3b8;
+    color: #9ca3af;
     font-size: 1.1rem;
-    letter-spacing: 1px;
-    opacity: 0.7;
+    background: var(--panel-bg);
 }
 
 .button-container {
@@ -109,12 +114,10 @@ body, html {
     height: 250px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(145deg, #1e293b, #0f172a);
-    box-shadow:  20px 20px 40px #090e19, -20px -20px 40px #15203b;
+    background: var(--panel-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.1s;
     outline: none;
     -webkit-tap-highlight-color: transparent;
 }
@@ -123,12 +126,8 @@ body, html {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
-    box-shadow: inset 5px 5px 15px rgba(255,255,255,0.2), 
-                inset -5px -5px 15px rgba(0,0,0,0.5),
-                0 0 20px rgba(239, 68, 68, 0.4);
+    background: var(--accent);
     position: relative;
-    transition: all 0.1s;
 }
 
 .btn-inner::after {
@@ -140,16 +139,10 @@ body, html {
     color: white;
     font-weight: 700;
     font-size: 1.5rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     letter-spacing: 2px;
 }
 
 #action-btn:active .btn-inner {
-    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
-    box-shadow: inset 10px 10px 20px rgba(0,0,0,0.6), 
-                inset -5px -5px 15px rgba(255,255,255,0.1);
-}
-
-#action-btn:active {
-    transform: scale(0.96);
+    background: #dc2626;
+    transform: scale(0.95);
 }

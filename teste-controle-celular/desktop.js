@@ -40,7 +40,7 @@ peer.on('connection', (conn) => {
     
     // Switch screens
     connScreen.classList.remove('active');
-    gameScreen.classList.active = true;
+    gameScreen.classList.add('active');
     setTimeout(() => {
         gameScreen.classList.add('active');
     }, 100);
@@ -83,17 +83,48 @@ function handleGyroMove(beta, gamma) {
     const sensX = 25; 
     const sensY = 25;
 
-    // Update target coordinates
+    // Update target coordinates (Invert diffBeta by subtracting instead of adding)
     let targetX = (window.innerWidth / 2) + (diffGamma * sensX);
-    let targetY = (window.innerHeight / 2) + (diffBeta * sensY);
+    let targetY = (window.innerHeight / 2) - (diffBeta * sensY);
 
-    // Clamp to screen bounds
+    // Clamp target to screen bounds
     targetX = Math.max(0, Math.min(window.innerWidth, targetX));
     targetY = Math.max(0, Math.min(window.innerHeight, targetY));
 
-    // Apply smoothing
-    pointerX = pointerX * smoothing + targetX * (1 - smoothing);
-    pointerY = pointerY * smoothing + targetY * (1 - smoothing);
+    // Magnetic Snapping Logic
+    let closestBtn = null;
+    let minDist = 150; // Threshold distance for snapping (pixels)
+
+    document.querySelectorAll('.target-btn').forEach(btn => {
+        const rect = btn.getBoundingClientRect();
+        const btnX = rect.left + rect.width / 2;
+        const btnY = rect.top + rect.height / 2;
+        
+        // Calculate distance from gyro target to button center
+        const dist = Math.hypot(targetX - btnX, targetY - btnY);
+        
+        // Remove hover state initially
+        btn.classList.remove('magnetic-hover');
+        
+        if (dist < minDist) {
+            minDist = dist;
+            closestBtn = { element: btn, x: btnX, y: btnY };
+        }
+    });
+
+    let finalTargetX = targetX;
+    let finalTargetY = targetY;
+
+    // If close to a button, snap to its center and apply visual hover
+    if (closestBtn) {
+        finalTargetX = closestBtn.x;
+        finalTargetY = closestBtn.y;
+        closestBtn.element.classList.add('magnetic-hover');
+    }
+
+    // Apply smoothing to the final position (either free or snapped)
+    pointerX = pointerX * smoothing + finalTargetX * (1 - smoothing);
+    pointerY = pointerY * smoothing + finalTargetY * (1 - smoothing);
 
     // Update DOM
     pointer.style.left = `${pointerX}px`;
