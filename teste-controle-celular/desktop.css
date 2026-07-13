@@ -122,26 +122,36 @@ body {
 
 .target-btn {
     position: absolute;
-    padding: 25px 45px; /* Larger buttons */
-    font-size: 1.5rem;
-    font-weight: 600;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     border: none;
-    border-radius: 8px;
-    background: var(--primary);
-    color: white;
+    background: var(--accent); /* Red flat */
+    color: transparent; /* no text needed */
     cursor: pointer;
-    transition: transform 0.1s, background 0.1s, outline 0.1s;
+    transition: transform 0.2s, background 0.3s, outline 0.2s, opacity 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 .target-btn.magnetic-hover {
-    transform: scale(1.1);
-    background: var(--primary-hover);
-    outline: 4px solid rgba(59, 130, 246, 0.5);
+    transform: scale(1.2);
+    outline: 4px solid rgba(239, 68, 68, 0.5); /* red outline */
 }
 
-.target-btn:active {
-    transform: scale(0.95);
-    background: #1d4ed8;
+.target-btn.btn-green {
+    background: #10b981; /* Green flat */
+    outline: 4px solid rgba(16, 185, 129, 0.5); /* green outline */
+    transform: scale(0.9);
+}
+
+.target-btn.btn-green.magnetic-hover {
+    /* If hovered while green */
+    transform: scale(1.1);
+}
+
+.target-btn.fade-out {
+    opacity: 0;
+    transform: scale(0);
 }
 
 /* Virtual Pointer */
