@@ -48,7 +48,7 @@ peer.on('connection', (conn) => {
     // Listen for data from controller
     conn.on('data', (data) => {
         if (data.type === 'gyro') {
-            handleGyroMove(data.beta, data.gamma);
+            handleGyroMove(data.alpha, data.beta, data.gamma);
         } else if (data.type === 'click') {
             performClick();
         }
@@ -111,17 +111,32 @@ let pointerY = window.innerHeight / 2;
 // Smooth factor for gyro noise
 const smoothing = 0.8;
 
-function handleGyroMove(beta, gamma) {
-    // We treat beta=0 and gamma=0 as the center (perfectly flat on a table)
+let calAlpha = null;
+
+function handleGyroMove(alpha, beta, gamma) {
+    // Set initial reference point for alpha (which acts like a compass 0-360)
+    if (calAlpha === null && alpha !== null) {
+        calAlpha = alpha;
+    }
+
+    let diffAlpha = 0;
+    if (alpha !== null) {
+        diffAlpha = alpha - calAlpha;
+        // Handle 360 wrap-around
+        if (diffAlpha > 180) diffAlpha -= 360;
+        if (diffAlpha < -180) diffAlpha += 360;
+    }
+
+    // We treat beta=0 as the center (perfectly flat on a table)
     const diffBeta = beta;
-    const diffGamma = gamma;
 
     // Sensitivity multipliers
     const sensX = 25; 
     const sensY = 25;
 
-    // Update target coordinates (Invert diffBeta)
-    let targetX = (window.innerWidth / 2) + (diffGamma * sensX);
+    // Update target coordinates
+    // Using diffAlpha for horizontal movement (rotating phone flat on table)
+    let targetX = (window.innerWidth / 2) - (diffAlpha * sensX);
     let targetY = (window.innerHeight / 2) - (diffBeta * sensY);
 
     // Clamp target to screen bounds

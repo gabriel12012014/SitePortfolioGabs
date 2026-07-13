@@ -85,18 +85,19 @@ function handleOrientation(event) {
     if (now - lastSend < sendInterval) return;
     lastSend = now;
 
-    let { beta, gamma } = event;
+    let { alpha, beta, gamma } = event;
     
     if (beta === null || gamma === null) {
         debugInfo.textContent = "Sensores não suportados ou bloqueados.";
         return; 
     }
 
-    debugInfo.textContent = `B: ${Math.round(beta)} | G: ${Math.round(gamma)}`;
+    debugInfo.textContent = `A: ${Math.round(alpha)} | B: ${Math.round(beta)} | G: ${Math.round(gamma)}`;
 
     if (conn && conn.open) {
         conn.send({
             type: 'gyro',
+            alpha: alpha,
             beta: beta,
             gamma: gamma
         });
